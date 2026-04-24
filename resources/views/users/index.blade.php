@@ -9,6 +9,12 @@
 @section('content')
 <p>User page</p>
 
+@if (session('status'))
+<div class="alert alert-success">
+    {{ session('status') }}
+</div>
+@endif
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -23,17 +29,22 @@
         </tr>
     </thead>
     <tbody>
-        <td>1</td>
-        <td>Leo</td>
-        <td>leo@example.com</td>
-        <td>Yes</td>
-        <td>Yes</td>
-        <td>5</td>
-        <td>2023-01-01</td>
-        <td>
-            <a href="#" class="btn btn-sm btn-primary">Edit</a>
-            <a href="#" class="btn btn-sm btn-danger">Delete</a>
-        </td>
+        @foreach($users as $user)
+        <tr>
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->is_active }}</td>
+            <td>{{ !is_null($user->email_verified_at) ? 1 : 0 }}</td>
+            <td>{{ 5 }}</td>
+            <td>{{ $user->created_at }}</td>
+            <td>
+                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        @endforeach
+
     </tbody>
 </table>
 @stop

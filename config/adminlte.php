@@ -376,6 +376,11 @@ return [
         //         ],
         //     ],
         // ],
+        [
+            'text' => 'Users',
+            'icon' => 'far fa-fw fa-user',
+            'url' => '/users'
+         ],
         ['header' => 'Collections'],
         [
             'text' => 'Collections',

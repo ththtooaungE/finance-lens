@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,13 @@ Route::middleware('auth')->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('users/{id}', [UserController::class, 'edit'])->name('users.edit');
         Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
+
+        Route::get('categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+        Route::post('categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+        Route::get('categories/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('categories/{id}', [CategoryController::class, 'delete'])->name('admin.categories.delete');
     });
 
     Route::get('/users', function () {

@@ -379,8 +379,21 @@ return [
         [
             'text' => 'Users',
             'icon' => 'far fa-fw fa-user',
-            'url' => '/users'
-         ],
+            'url' => 'admin/users'
+        ],
+
+        ['header' => 'Categories'],
+        [
+            'text' => 'System Categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'admin/categories/system'
+        ],
+        [
+            'text' => 'View all categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'admin/categories'
+        ],
+
         ['header' => 'Collections'],
         [
             'text' => 'Collections',

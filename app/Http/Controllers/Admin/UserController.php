@@ -11,9 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::whereNot('id', auth()->user()->id)->get();
-
-        // return $users;
+        $users = User::whereNot('id', auth()->id())->get();
 
         return view('users.index', compact('users'));
     }

@@ -6,16 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    protected $service;
+
+    public function __construct(CategoryService $service) 
+    {
+        $this->service = $service;
+    }
+
     public function index() 
     {
-        $categories = Category::take(10)->get();
+        // $categories = Category::take(10)->get();
+        $categories = $this->service->paginate(15);
         // return $categories;
         return view('admin.categories.index', compact('categories'));
+    }
+
+    public function getMine() {
+        $categories = $this->service->getMine();
+
+        return view('admin.categories.index', compact($categories));
     }
 
     public function create(): View 
@@ -26,36 +41,28 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         try {
-            \Log::info('Category Request', [
-                'all' => $request->all()
-            ]);
             $data = $request->validated();
             $data['user_id'] = auth()->id();
 
-            Category::create($data);
+            $this->service->create($data);
 
-            return redirect()
-                ->route('admin.categories.index')
-                ->with('status', 'Category created successfully.');
+            return redirect()->route('admin.categories.index')->with('status', 'Category created successfully!');
+
         } catch (\Throwable $e) {
             \Log::error('Category store failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Failed to create category.');
+            return back()->withInput()->with('error', 'Failed to create category!');
         }
     }
 
     public function edit(Request $request, $id) 
     {
-        $category = Category::findOrFail($id);
+        $category = $this->service->find($id);
 
         if(!$category) {
-            return redirect()
-                ->route('admin.categories.index')
-                ->with('error', 'Category Not Found!');
+            return redirect()->route('admin.categories.index')->with('error', 'Category Not Found!');
         }
 
         return view('admin.categories.edit', compact('category'));
@@ -64,7 +71,7 @@ class CategoryController extends Controller
     public function update(CategoryUpdateRequest $request, $id) 
     {
         try {
-            $category = Category::findOrFail($id);
+            $category = $this->service->find($id);
 
             if (!$category) {
                 return redirect()
@@ -73,45 +80,40 @@ class CategoryController extends Controller
             }
 
             $data = $request->validated();
-            $category->update($data);
+            $this->service->update($category->id, $data);
 
-            return redirect()
-                ->route('admin.categories.index')
-                ->with('status', 'Category updated successfully!');
+            return redirect()->route('admin.categories.index')->with('status', 'Category updated successfully!');
+
         } catch (\Throwable $e) {
             \Log::error('Category update failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Failed to update category.');
+            return back()->withInput()->with('error', 'Failed to update category.');
         }
     }
 
     public function delete($id) 
     {
         try {
-            $category = Category::findOrFail($id);
+            $category = $this->service->find($id);
 
             if(!$category) {
-                return back()
-                    ->with('error', 'Failed to delete category.');
+                return back()->with('error', 'Failed to delete category.');
             }
 
-            $category->delete();
+            $this->service->delete($category->id);
 
-            return redirect()
-                ->route('admin.categories.index')
-                ->with('status', 'Category deleted successfully!');
+            return redirect()->route('admin.categories.index')->with('status', 'Category deleted successfully!');
+            
         } catch (\Throwable $e) {
             \Log::error('Category delete failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()
-                ->withInput()
-                ->with('error', 'Failed to delete category.');
+            return back()->withInput()->with('error', 'Failed to delete category.');
         }
     }
+
+    
 }

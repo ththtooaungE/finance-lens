@@ -1,44 +1,56 @@
 @extends('adminlte::page')
 
-@section('title', 'Categories')
+@section('title', 'Users')
 
 @section('content_header')
-<h3>Categories</h3>
+<h1>Users</h1>
 @stop
 
 @section('content')
-<table id="categoryTable" class="table table-bordered table-striped">
+
+<table id="usersTable" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <td scope="col">Name</td>
-            <td scope="col">Active</td>
-            <td scope="col">Owner</td>
-            <td scope="col">Created Time</td>
-            <td scope="col">Actions</td>
+            <th class="text-center">ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Verified</th>
+            <th>Register Date</th>
+            <th>Actions</th>
             
         </tr>
     </thead>
 </table>
+
 @stop
 
 @section('js')
 <script>
     $(document).ready(function() {
-        $('#categoryTable').DataTable({
+        $('#usersTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ url("admin/categories") }}',
+            ajax: '{{ url("admin/users") }}',
             columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
                 },
                 {
                     data: 'is_active',
                     name: 'is_active'
                 },
                 {
-                    data: 'user_id',
-                    name: 'user_id'
+                    data: 'email_verified_at',
+                    name: 'email_verified_at'
                 },
                 {
                     data: 'created_at',

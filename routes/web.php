@@ -19,16 +19,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('admin')->group(function() {
-        Route::get('users', [UserController::class, 'index'])->name('users.index');
-        Route::get('users/{id}', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');
 
-        Route::get('categories', [CategoryController::class, 'index'])->name('admin.categories.index');
-        Route::get('categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
-        Route::post('categories', [CategoryController::class, 'store'])->name('admin.categories.store');
-        Route::get('categories/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
-        Route::put('categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
-        Route::delete('categories/{id}', [CategoryController::class, 'delete'])->name('admin.categories.delete');
+        Route::resource('categories', CategoryController::class, [
+            'except' => ['show'],
+            'names' => [
+                'index' => 'admin.categories.index',
+                'create' => 'admin.categories.create',
+                'store' => 'admin.categories.store',
+                'edit' => 'admin.categories.edit',
+                'update' => 'admin.categories.update',
+                'destroy' => 'admin.categories.destroy',
+            ]
+        ]);
     });
 
     Route::get('/users', function () {

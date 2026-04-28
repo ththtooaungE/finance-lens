@@ -19,11 +19,48 @@ class CategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index() 
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request) 
     {
-        // $categories = Category::take(10)->get();
         $categories = $this->service->paginate(15);
-        // return $categories;
+
+        if($request->ajax()) {
+            $categories = Category::select(
+                'id',
+                'user_id',
+                'name',
+                'is_active',
+                'created_at'
+            );
+
+            return datatables()
+                ->of($categories)
+                ->editColumn('is_active', function ($category) {
+                    return $category->is_active ? 'True' : '-';
+                })
+                ->editColumn('created_at', function ($category) {
+                    return $category->created_at->format('Y-m-d h:i');
+                })
+                ->addColumn('actions', function ($category) {
+                    $editUrl = route('admin.categories.edit', $category->id);
+                    $deleteUrl = route('admin.categories.destroy', $category->id);
+
+                    $btn = '<a href="'. $editUrl . '" class="btn btn-sm btn-primary mr-2">Edit</a>';
+                    $btn .= '<form action="'
+                    . $deleteUrl
+                    . '" method="post" style="display:inline-block">'
+                    . csrf_field()
+                    . method_field('DELETE')
+                    . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                    </form>';
+                    return $btn;
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
         return view('admin.categories.index', compact('categories'));
     }
 

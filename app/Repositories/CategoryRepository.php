@@ -11,7 +11,7 @@ class CategoryRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    public function getSystemCategory(): ?Collection 
+    public function getSystemCategories(): ?Collection 
     {
         return Category::where('user_id', 1)
             ->where('is_active', true)
@@ -19,7 +19,7 @@ class CategoryRepository extends BaseRepository
             ->get();   
     }
 
-    public function getMine(): ?Collection
+    public function getMyCategories(): ?Collection
     {
         return Category::where('user_id', auth()->id())
         ->latest()

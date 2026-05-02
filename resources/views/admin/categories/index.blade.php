@@ -10,12 +10,11 @@
 <table id="categoryTable" class="table table-bordered table-striped">
     <thead>
         <tr>
+            <td scope="col">No</td>
             <td scope="col">Name</td>
             <td scope="col">Active</td>
             <td scope="col">Owner</td>
-            <td scope="col">Created Time</td>
-            <td scope="col">Actions</td>
-            
+            <td scope="col">Created Time</td>            
         </tr>
     </thead>
 </table>
@@ -27,30 +26,29 @@
         $('#categoryTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ url("admin/categories") }}',
+            ajax: '{{ $ajaxUrl }}',
             columns: [{
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'is_active',
-                    name: 'is_active'
-                },
-                {
-                    data: 'user_id',
-                    name: 'user_id'
-                },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
-                {
-                    data: 'actions',
-                    name: 'actions',
-                    orderable: false,
-                    searchable: false
-                }
-            ]
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'is_active',
+                name: 'is_active'
+            },
+            {
+                data: 'user_id',
+                name: 'user_id'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
+            }]
         });
     });
 </script>

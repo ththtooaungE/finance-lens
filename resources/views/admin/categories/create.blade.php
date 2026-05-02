@@ -14,7 +14,7 @@
     </div>
 
     <div class="card-body">
-        <form method="post" action="{{ route('admin.categories.store') }}">
+        <form method="post" action="{{ $storeUrl }}">
             @csrf
             @method('post')
             <div class="mb-3">
@@ -39,8 +39,8 @@
                     id="is_active"
                     value="1"
                     class="form-check-input"
-                    {{ old('is_active', 1) ? 'checked' : '' }}> 
-                    <label for="is_active" class="form-check-label">Check if the category is active</label>
+                    {{ old('is_active', 1) ? 'checked' : '' }}>
+                <label for="is_active" class="form-check-label">Check if the category is active</label>
 
                 @error('is_active')
                 <span class="invalid-feedback d-block">{{ $message }}</span>

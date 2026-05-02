@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
@@ -9,22 +9,16 @@ use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Throwable;
+
+use function Laravel\Prompts\datatable;
 
 class CategoryController extends Controller
 {
-    protected $service;
+    public function __construct(public CategoryService $service)
+    {}
 
-    public function __construct(CategoryService $service) 
-    {
-        $this->service = $service;
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request) 
-    {
-        $categories = $this->service->paginate(15);
+    public function index(Request $request) {
 
         if($request->ajax()) {
             $categories = Category::select(
@@ -33,7 +27,9 @@ class CategoryController extends Controller
                 'name',
                 'is_active',
                 'created_at'
-            );
+            )
+            ->whereIn('user_id', ['1',auth()->id()])
+            ->where('is_active', true);
 
             return datatables()
                 ->of($categories)
@@ -46,16 +42,16 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-
-        return view('admin.categories.index', [
-            'ajaxUrl' => route('admin.categories.index')
+        return view('admin.categories.index',[
+            'ajaxUrl' => route('user.categories.index')
         ]);
     }
 
-    public function getSystemCategory(Request $request)
+    
+    public function getMyCategory(Request $request) 
     {
-        if($request->ajax()) {
-            $categories = $this->service->getSystemCategories();
+        if ($request->ajax()) {
+            $categories = $this->service->getMine();
 
             return datatables()
                 ->of($categories)
@@ -63,11 +59,11 @@ class CategoryController extends Controller
                     return $category->is_active ? 'True' : '-';
                 })
                 ->editColumn('created_at', function ($category) {
-                    return $category->created_at->format('Y-m-d h:i');
+                    return optional($category->created_at)->format('Y-m-d h:i');
                 })
                 ->addColumn('actions', function ($category) {
-                    $editUrl = route('admin.categories.edit', $category->id);
-                    $deleteUrl = route('admin.categories.destroy', $category->id);
+                    $editUrl = route('user.categories.edit', $category->id);
+                    $deleteUrl = route('user.categories.destroy', $category->id);
 
                     $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-2">Edit</a>';
                     $btn .= '<form action="'
@@ -83,37 +79,27 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-
         return view('admin.categories.system', [
-            'ajaxUrl' => route('admin.categories.system'),
-            'createUrl' => route('admin.categories.create')
+            'ajaxUrl' => route('user.categories.mine'),
+            'createUrl' => route('user.categories.create')
         ]);
     }
 
-    public function getMine() {
-        $categories = $this->service->getMine();
-
-        return view('admin.categories.index', compact('categories'));
-    }
-
-    public function create(): View 
-    {
+    public function create() : View {
         return view('admin.categories.create',[
-            'storeUrl' => route('admin.categories.store')
+            'storeUrl' => route('user.categories.store')
         ]);
     }
 
-    public function store(CategoryStoreRequest $request)
-    {
+    public function store(CategoryStoreRequest $request) {
         try {
             $data = $request->validated();
             $data['user_id'] = auth()->id();
 
             $this->service->create($data);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category created successfully!');
-
-        } catch (\Throwable $e) {
+            return redirect()->route('user.categories.index')->with('success', 'Category created successfully!');
+        } catch (Throwable $e) {
             \Log::error('Category store failed', [
                 'error' => $e->getMessage()
             ]);
@@ -122,66 +108,74 @@ class CategoryController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) 
+    public function show(int|string $id)
     {
-        $category = $this->service->find($id);
+        $category = Category::where('user_id', auth()->id())
+            ->findOrFail($id);
+        if (!$category) {
+            return back()->with('error', 'Category Not Found');
+        }
 
-        if(!$category) {
-            return redirect()->route('admin.categories.index')->with('error', 'Category Not Found!');
+        return view('user.categories.show', compact('category'));
+    }
+
+    public function edit(int|string $id) : View {
+        $category = Category::where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        if (!$category) {
+            return back()->with('error', 'Category Not Found');
         }
 
         return view('admin.categories.edit', [
             'category' => $category,
-            'updateUrl' => route('admin.categories.update', $category->id)
+            'updateUrl' => route('user.categories.update', $category->id)
         ]);
     }
 
-    public function update(CategoryUpdateRequest $request, $id) 
+    public function update(CategoryUpdateRequest $request, int|string $id) 
     {
         try {
-            $category = $this->service->find($id);
-
+            $category = Category::where('user_id', auth()->id())
+                ->findOrFail($id);
             if (!$category) {
-                return redirect()
-                    ->route('admin.categories.index')
-                    ->with('error', 'Category Not Found!');
+                return back()->with('error', 'Category Not Found');
             }
 
             $data = $request->validated();
-            $this->service->update($category->id, $data);
+            $this->service->update($id, $data);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category updated successfully!');
+            return redirect()->route('user.categories.index')->with('success', 'Category updated successfully!');
 
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             \Log::error('Category update failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()->withInput()->with('error', 'Failed to update category.');
+            return back()->withInput()->with('error', 'Failed to update category!');
         }
     }
 
-    public function delete($id) 
+
+    public function destroy(int|string $id) 
     {
         try {
-            $category = $this->service->find($id);
-
-            if(!$category) {
-                return back()->with('error', 'Failed to delete category.');
+            $category = Category::where('user_id', auth()->id())
+                ->findOrFail($id);
+            if (!$category) {
+                return back()->with('error', 'Category Not Found');
             }
 
-            $this->service->delete($category->id);
+            $this->service->delete($id);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category deleted successfully!');
-            
-        } catch (\Throwable $e) {
+            return redirect()->route('user.categories.index')->with('success', 'Category deleted successfully!');
+
+        } catch (Throwable $e) {
             \Log::error('Category delete failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()->withInput()->with('error', 'Failed to delete category.');
+            return back()->with('error', 'Failed to delete category!');
         }
     }
-
-    
 }

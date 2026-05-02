@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body">
-        <form method="post" action="{{ route('admin.categories.update', $category->id) }}">
+        <form method="post" action="{{ $updateUrl }}">
             @csrf
             @method('put')
             <div class="mb-3">

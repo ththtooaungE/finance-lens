@@ -379,7 +379,8 @@ return [
         [
             'text' => 'Users',
             'icon' => 'far fa-fw fa-user',
-            'url' => 'admin/users'
+            'url' => 'admin/users',
+            'can' => 'isAdmin',
         ],
 
         ['header' => 'Categories'],

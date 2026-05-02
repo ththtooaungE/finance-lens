@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::prefix('admin')->group(function() {
+    Route::prefix('admin')->middleware('role:admin')->group(function() {
         Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
         Route::get('users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
@@ -37,9 +37,9 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
-    Route::get('/users', function () {
-        return view('users.index');
-    })->name('users.index');
+    Route::prefix('user')->middleware('role:user')->group(function() {
+    
+    });
 
     Route::get('/collections', function () {
         return view('collections.index');

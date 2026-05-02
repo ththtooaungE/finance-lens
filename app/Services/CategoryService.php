@@ -17,13 +17,13 @@ class CategoryService extends BaseService
         parent::__construct($repository);
     }
 
-    public function getSystemCategory() 
+    public function getSystemCategories() 
     {
-        return $this->repository->getSystemCategory();
+        return $this->repository->getSystemCategories();
     }
 
     public function getMine() 
     {
-        return $this->repository->getMine();
+        return $this->repository->getMyCategories();
     }
 }

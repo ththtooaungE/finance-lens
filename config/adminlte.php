@@ -385,14 +385,28 @@ return [
 
         ['header' => 'Categories'],
         [
-            'text' => 'System Categories',
-            'icon' => 'far fa-fw fa-file',
-            'url' => 'admin/categories/system'
-        ],
-        [
             'text' => 'View all categories',
             'icon' => 'far fa-fw fa-file',
-            'url' => 'admin/categories'
+            'url' => 'admin/categories',
+            'can' => 'isAdmin',
+        ],
+        [
+            'text' => 'System categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'admin/categories/system',
+            'can' => 'isAdmin',
+        ],
+        [
+            'text' => 'View categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'user/categories',
+            'can' => 'isUser',
+        ],
+        [
+            'text' => 'View my categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'user/categories/mine',
+            'can' => 'isUser',
         ],
 
         ['header' => 'Collections'],

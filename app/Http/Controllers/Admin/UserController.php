@@ -38,7 +38,7 @@ class UserController extends Controller
                     $editUrl = route('admin.users.edit', $user->id);
                     $deleteUrl = route('admin.users.delete', $user->id);
 
-                    $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary">Edit</a>';
+                    $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1">Edit</a>';
                     $btn .= '<form action="' .  $deleteUrl . '" method="post" style="display:inline-block">' 
                     . csrf_field()
                     . method_field('DELETE')

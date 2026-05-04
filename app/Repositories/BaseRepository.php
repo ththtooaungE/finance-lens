@@ -57,6 +57,11 @@ abstract class BaseRepository
         return $this->model->where($conditions)->get();
     }
 
+    public function exists(array $conditions): bool
+    {
+        return $this->model->where($conditions)->exists();
+    }
+
     public function paginate(int $perPage = 15): LengthAwarePaginator
     {
         return $this->model->paginate($perPage);

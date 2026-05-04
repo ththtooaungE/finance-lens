@@ -413,7 +413,8 @@ return [
         [
             'text' => 'Collections',
             'icon' => 'far fa-fw fa-file',
-            'url' => '/collections',
+            'url' => '/user/collections',
+            'can' => 'isUser',
         ],
         [
             'text' => 'March',

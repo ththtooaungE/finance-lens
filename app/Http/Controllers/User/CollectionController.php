@@ -1,0 +1,142 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CollectionStoreRequest;
+use App\Models\Collection;
+use App\Services\CollectionService;
+use Illuminate\Http\Request;
+use Throwable;
+
+class CollectionController extends Controller
+{
+    public function __construct(protected CollectionService $service) {
+        
+    }
+    
+    public function index(Request $request) 
+    {
+        if ($request->ajax()) {
+
+            $collections = Collection::where('user_id', auth()->id())
+                ->select('id', 'name', 'description', 'created_at', 'updated_at');
+
+            return datatables()
+                ->of($collections)
+                ->editColumn('created_at', function ($collection) {
+                    return optional($collection->created_at)->format('Y-m-d h:i');
+                })
+                ->editColumn('updated_at', function ($collection) {
+                    return optional($collection->updated_at)->format('Y-m-d h:i');
+                })
+                ->addColumn('actions', function ($collection) {
+                    $editUrl = route('collections.edit', $collection->id);
+                    $deleteUrl = route('collections.destroy', $collection->id);
+
+                    $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1">Edit</a>';
+
+                    $btn .= '<form action="' . $deleteUrl . '" method="post" style="display: inline-block;">'
+                        . csrf_field()
+                        . method_field('DELETE')
+                        . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>'
+                        . '</form>';
+
+                    return $btn;
+                })
+                ->rawColumns(['actions'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
+        return view('collections.index');
+    }
+
+    public function show(int| string $id) 
+    {
+        $collection = $this->service->find($id);
+        return view('collections.edit', compact('collection'));
+    }
+
+    public function create()
+    {
+        return view('collections.create');
+    }
+
+    public function store(CollectionStoreRequest $request) 
+    {
+        try {
+            $data = $request->validated();
+
+            $data['user_id'] = auth()->id();
+            $this->service->create($data);
+
+            return redirect()->route('collections.index')->with('success', 'Collection created successfully!');
+
+        } catch (Throwable $e) {
+            \Log::error('Category store failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return back()->withInput()->with('error', 'Failed to create category!');
+        }        
+    }
+
+    public function edit(int|string $id)
+    {
+        $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+
+        if (!$exists) {
+            return back()->withInput()->with('error', 'Collection not found!');
+        }
+
+        $collection = $this->service->find($id);
+        return view('collections.edit', compact('collection'));
+    }
+
+    public function update(CollectionStoreRequest $request, int|string $id) 
+    {
+        try {
+            $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+
+            if (!$exists) {
+                return back()->withInput()->with('error', 'Collection not found!');
+            }
+
+            $data = $request->validated();
+            $this->service->update($id, $data);
+
+            return redirect()->route('collections.index')->with('success', 'Collection updated successfully!');
+            
+        } catch (Throwable $e) {
+            \Log::error('Category store failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return back()->withInput()->with('error', 'Failed to create category!');
+        }
+
+    }
+
+    public function destroy(int|string $id) 
+    {
+        try {
+            $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+
+            if (!$exists) {
+                return back()->withInput()->with('error', 'Collection not found!');
+            }
+
+            $this->service->delete($id);
+
+            return redirect()->route('collections.index')->with('success', 'Collection deleted successfully!');
+
+        } catch (Throwable $e) {
+            \Log::error('Category store failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return back()->withInput()->with('error', 'Failed to create category!');
+        }
+    }
+}

@@ -3,38 +3,71 @@
 @section('title', 'Collections')
 
 @section('content_header')
-<h1>Collections</h1>
+<div class="row">
+    <div class="col-md-6">
+        <h1>Collections</h1>
+    </div>
+    <div class="col-md-6 text-right">
+        <a href="{{ route('collections.create') }}" class="btn btn-primary">Create Collection</a>
+    </div>
+</div>
+
 @stop
 
 @section('content')
-<table class="table table-border table-striped">
-
-    <head>
+<table id="collectionTable" class="table table-border table-striped">
+    <thead>
         <tr>
-            <th>ID</th>
+            <th>No</th>
             <th>Name</th>
             <th>Description</th>
-            <th>No of Records</th>
             <th>Created At</th>
             <th>Updated At</th>
             <th>Actions</th>
         </tr>
-    </head>
-
-    <body>
-        <tr>
-            <td>1</td>
-            <td>Collection 1</td>
-            <td>Description for Collection 1</td>
-            <td>10</td>
-            <td>2023-01-01 00:00:00</td>
-            <td>2023-01-01 00:00:00</td>
-            <td>
-                <a href="#" class="btn btn-sm btn-warning">Details</a>
-                <a href="#" class="btn btn-sm btn-primary">Edit</a>
-                <a href="#" class="btn btn-sm btn-danger">Delete</a>
-            </td>
-        </tr>
-    </body>
+    </thead>
+    <tbody></tbody>
 </table>
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('#collectionTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('collections.index') }}",
+            columns: [
+                {
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'updated_at',
+                    name: 'updated_at'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+    });
+</script>
 @stop

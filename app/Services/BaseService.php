@@ -41,6 +41,11 @@ abstract class BaseService
         return $this->repository->delete($id);
     }
 
+    public function exists(array $conditions): Bool
+    {
+        return $this->repository->exists($conditions);    
+    }
+
     public function paginate(int $perPage = 15) : LengthAwarePaginator 
     {
         return $this->repository->paginate($perPage);    

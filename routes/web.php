@@ -55,11 +55,11 @@ Route::middleware('auth')->group(function () {
         Route::get('categories/{id}/edit', [UserCategoryController::class, 'edit'])->name('user.categories.edit');
         Route::put('categories/{id}', [UserCategoryController::class, 'update'])->name('user.categories.update');
         Route::delete('categories/{id}', [UserCategoryController::class, 'destroy'])->name('user.categories.destroy');
-    });
 
-    Route::get('/collections', function () {
-        return view('collections.index');
-    })->name('collections.index');
+        // User Collection Routes
+        Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class);
+
+    });
 });
 
 require __DIR__.'/auth.php';

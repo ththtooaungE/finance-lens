@@ -31,16 +31,18 @@ class CollectionController extends Controller
                     return optional($collection->updated_at)->format('Y-m-d h:i');
                 })
                 ->addColumn('actions', function ($collection) {
+                    $viewUrl = route('collections.show', $collection->id);
                     $editUrl = route('collections.edit', $collection->id);
                     $deleteUrl = route('collections.destroy', $collection->id);
 
-                    $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1">Edit</a>';
-
-                    $btn .= '<form action="' . $deleteUrl . '" method="post" style="display: inline-block;">'
+                $btn = '<div class="btn-group" role="group">'
+                        . '<a href="' . $viewUrl . '" class="btn btn-sm btn-info mr-1 rounded-sm">View</a>'
+                        . '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1 rounded-sm">Edit</a>';
+                $btn .= '<form action="' . $deleteUrl . '" method="post" style="display: inline-block;">'
                         . csrf_field()
                         . method_field('DELETE')
                         . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>'
-                        . '</form>';
+                        . '</form> </div>';
 
                     return $btn;
                 })
@@ -55,7 +57,7 @@ class CollectionController extends Controller
     public function show(int| string $id) 
     {
         $collection = $this->service->find($id);
-        return view('collections.edit', compact('collection'));
+        return view('collections.show', compact('collection'));
     }
 
     public function create()
@@ -138,5 +140,30 @@ class CollectionController extends Controller
 
             return back()->withInput()->with('error', 'Failed to create category!');
         }
+    }
+
+    public function costs(int|string $id)
+    {
+        $collection = $this->service->find($id);
+
+        if (!$collection || $collection->user_id !== auth()->id()) {
+            return back()->withInput()->with('error', 'Collection not found or access denied!');
+        }
+
+        $costs = $collection->costs()->latest();
+
+        return datatables()->of($costs)
+            ->addColumn('category', function ($cost) {
+                return $cost->category->name ?? null;
+            })
+            ->addColumn('actions', function ($cost) {
+                return ''; // not needed visually, but required
+            })
+            ->make(true);
+        // return response()->json([
+        //     'status' => 'success',
+        //     'data' => $costs
+        // ], 200);
+        // return view('collections.costs', compact('collection', 'costs'));
     }
 }

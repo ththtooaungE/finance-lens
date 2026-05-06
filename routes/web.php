@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
+use App\Http\Controllers\User\CostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -59,6 +60,13 @@ Route::middleware('auth')->group(function () {
         // User Collection Routes
         Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class);
 
+        Route::get('/collections/{id}/costs', [\App\Http\Controllers\User\CollectionController::class, 'costs'])->name('collections.costs');
+
+        // User Cost Routes - API Endpoints
+
+        Route::post('costs/store', [CostController::class, 'store'])->name('costs.store');
+        Route::put('costs/{id}', [CostController::class, 'update'])->name('costs.update');
+        Route::delete('costs/{id}', [CostController::class, 'delete'])->name('costs.delete');
     });
 });
 

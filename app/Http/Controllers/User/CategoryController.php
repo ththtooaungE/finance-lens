@@ -29,13 +29,11 @@ class CategoryController extends Controller
                 'created_at'
             )
             ->whereIn('user_id', ['1',auth()->id()])
-            ->where('is_active', true);
+            ->where('is_active', true)
+            ->with('user:id,name');
 
             return datatables()
                 ->of($categories)
-                ->editColumn('is_active', function ($category) {
-                    return $category->is_active ? 'True' : '-';
-                })
                 ->editColumn('created_at', function ($category) {
                     return $category->created_at->format('Y-m-d h:i');
                 })
@@ -56,8 +54,9 @@ class CategoryController extends Controller
             return datatables()
                 ->of($categories)
                 ->editColumn('is_active', function ($category) {
-                    return $category->is_active ? 'True' : '-';
-                })
+                return $category->is_active
+                    ? '<span class="badge badge-success">Active</span>'
+                    : '<span class="badge badge-secondary">Inactive</span>';                })
                 ->editColumn('created_at', function ($category) {
                     return optional($category->created_at)->format('Y-m-d h:i');
                 })
@@ -75,11 +74,11 @@ class CategoryController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['actions'])
+                ->rawColumns(['actions', 'is_active'])
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('admin.categories.system', [
+        return view('admin.categories.mine', [
             'ajaxUrl' => route('user.categories.mine'),
             'createUrl' => route('user.categories.create')
         ]);
@@ -98,7 +97,7 @@ class CategoryController extends Controller
 
             $this->service->create($data);
 
-            return redirect()->route('user.categories.index')->with('success', 'Category created successfully!');
+            return redirect()->route('user.categories.mine')->with('success', 'Category created successfully!');
         } catch (Throwable $e) {
             \Log::error('Category store failed', [
                 'error' => $e->getMessage()
@@ -145,7 +144,7 @@ class CategoryController extends Controller
             $data = $request->validated();
             $this->service->update($id, $data);
 
-            return redirect()->route('user.categories.index')->with('success', 'Category updated successfully!');
+            return redirect()->route('user.categories.mine')->with('success', 'Category updated successfully!');
 
         } catch (Throwable $e) {
             \Log::error('Category update failed', [
@@ -168,7 +167,7 @@ class CategoryController extends Controller
 
             $this->service->delete($id);
 
-            return redirect()->route('user.categories.index')->with('success', 'Category deleted successfully!');
+            return redirect()->route('user.categories.mine')->with('success', 'Category deleted successfully!');
 
         } catch (Throwable $e) {
             \Log::error('Category delete failed', [

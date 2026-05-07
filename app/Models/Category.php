@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['user_id', 'name', 'is_active'])]
 class Category extends Model
 {
-    
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
 }

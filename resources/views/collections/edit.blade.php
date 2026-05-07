@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label for="category_ids">Categories</label>
-                <select name="category_ids[]" id="category_ids" class="custom-select" multiple>
+                <select name="category_ids[]" id="category_ids" class="custom-select" size="7" multiple>
                     @foreach($categories as $category)
                     <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg" 
                         @foreach($collection->categories as $collectionCategory)

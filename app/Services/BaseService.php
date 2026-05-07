@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {
-    protected $repository;
+    protected BaseRepository $repository;
 
     public function __construct(BaseRepository $repository) 
     {

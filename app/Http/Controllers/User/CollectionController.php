@@ -4,15 +4,22 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CollectionStoreRequest;
+use App\Models\Category;
 use App\Models\Collection;
+use App\Services\CategoryService;
 use App\Services\CollectionService;
 use Illuminate\Http\Request;
 use Throwable;
 
 class CollectionController extends Controller
 {
-    public function __construct(protected CollectionService $service) {
-        
+    protected CollectionService $collectionService;
+    protected CategoryService $categoryService;
+
+    public function __construct(CollectionService $collectionService, CategoryService $categoryService) 
+    {
+        $this->collectionService = $collectionService;
+        $this->categoryService = $categoryService;
     }
     
     public function index(Request $request) 
@@ -56,22 +63,27 @@ class CollectionController extends Controller
 
     public function show(int| string $id) 
     {
-        $collection = $this->service->find($id);
+        $collection = $this->collectionService->find($id);
         return view('collections.show', compact('collection'));
     }
 
     public function create()
     {
-        return view('collections.create');
+        $categories = Category::whereIn('user_id', [1, auth()->id()])->get();
+        return view('collections.create', compact('categories'));
     }
 
     public function store(CollectionStoreRequest $request) 
     {
+        // \Log::info('Collection store request received', [
+        //     'user_id' => auth()->id(),
+        //     'request_data' => $request->all()
+        // ]);
         try {
             $data = $request->validated();
 
             $data['user_id'] = auth()->id();
-            $this->service->create($data);
+            $this->collectionService->create($data);
 
             return redirect()->route('collections.index')->with('success', 'Collection created successfully!');
 
@@ -86,27 +98,28 @@ class CollectionController extends Controller
 
     public function edit(int|string $id)
     {
-        $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+        $exists = $this->collectionService->exists(['user_id' => auth()->id(), 'id' => $id]);
 
         if (!$exists) {
             return back()->withInput()->with('error', 'Collection not found!');
         }
 
-        $collection = $this->service->find($id);
-        return view('collections.edit', compact('collection'));
+        $collection = Collection::with('categories')->find($id);
+        $categories = Category::whereIn('user_id', [1, auth()->id()])->get();
+        return view('collections.edit', compact('collection', 'categories'));
     }
 
     public function update(CollectionStoreRequest $request, int|string $id) 
     {
         try {
-            $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+            $exists = $this->collectionService->exists(['user_id' => auth()->id(), 'id' => $id]);
 
             if (!$exists) {
                 return back()->withInput()->with('error', 'Collection not found!');
             }
 
             $data = $request->validated();
-            $this->service->update($id, $data);
+            $this->collectionService->update($id, $data);
 
             return redirect()->route('collections.index')->with('success', 'Collection updated successfully!');
             
@@ -123,13 +136,13 @@ class CollectionController extends Controller
     public function destroy(int|string $id) 
     {
         try {
-            $exists = $this->service->exists(['user_id' => auth()->id(), 'id' => $id]);
+            $exists = $this->collectionService->exists(['user_id' => auth()->id(), 'id' => $id]);
 
             if (!$exists) {
                 return back()->withInput()->with('error', 'Collection not found!');
             }
 
-            $this->service->delete($id);
+            $this->collectionService->delete($id);
 
             return redirect()->route('collections.index')->with('success', 'Collection deleted successfully!');
 
@@ -144,7 +157,7 @@ class CollectionController extends Controller
 
     public function costs(int|string $id)
     {
-        $collection = $this->service->find($id);
+        $collection = $this->collectionService->find($id);
 
         if (!$collection || $collection->user_id !== auth()->id()) {
             return back()->withInput()->with('error', 'Collection not found or access denied!');

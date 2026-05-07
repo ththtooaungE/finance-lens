@@ -24,6 +24,19 @@
                 <textarea name="description" id="description" class="form-control">{{ old('description', $collection->description) }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label for="category_ids">Categories</label>
+                <select name="category_ids[]" id="category_ids" class="custom-select" multiple>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg" 
+                        @foreach($collection->categories as $collectionCategory)
+                            {{ $collectionCategory->id == $category->id ? 'selected' : '' }}
+                        @endforeach
+                        >{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>

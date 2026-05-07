@@ -20,7 +20,6 @@
             <td scope="col">No</td>
             <td scope="col">Name</td>
             <td scope="col">Active</td>
-            <td scope="col">Owner</td>
             <td scope="col">Created Time</td>
             <td scope="col">Actions</td>
         </tr>
@@ -48,10 +47,6 @@
                 {
                     data: 'is_active',
                     name: 'is_active'
-                },
-                {
-                    data: 'user_id',
-                    name: 'user_id'
                 },
                 {
                     data: 'created_at',

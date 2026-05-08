@@ -163,7 +163,9 @@ class CollectionController extends Controller
             return back()->withInput()->with('error', 'Collection not found or access denied!');
         }
 
-        $costs = $collection->costs()->latest();
+        $costs = $collection->costs()
+            ->with('category:id,name')
+            ->latest();
 
         return datatables()->of($costs)
             ->addColumn('category', function ($cost) {
@@ -173,10 +175,5 @@ class CollectionController extends Controller
                 return ''; // not needed visually, but required
             })
             ->make(true);
-        // return response()->json([
-        //     'status' => 'success',
-        //     'data' => $costs
-        // ], 200);
-        // return view('collections.costs', compact('collection', 'costs'));
     }
 }

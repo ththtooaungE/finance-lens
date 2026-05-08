@@ -28,16 +28,19 @@
                 <label for="category_ids">Categories</label>
                 <select name="category_ids[]" id="category_ids" class="custom-select" size="7" multiple>
                     @foreach($categories as $category)
-                    <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg" 
+                    <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg"
                         @foreach($collection->categories as $collectionCategory)
-                            {{ $collectionCategory->id == $category->id ? 'selected' : '' }}
+                        {{ $collectionCategory->id == $category->id ? 'selected' : '' }}
                         @endforeach
-                        >{{ $category->name }}</option>
+                        >{{ $category->name }}
+                    </option>
                     @endforeach
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route('collections.index') }}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="min-width: 75px;">Save</button>
+
         </form>
     </div>
 </div>

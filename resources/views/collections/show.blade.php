@@ -9,6 +9,21 @@
 @section('content')
 <p>{{ $collection->description }}</p>
 
+<!-- Collection's Categories -->
+<div>
+    <h5 class="d-inline-block">Categories:</h5>
+
+    @if($collection->categories->isEmpty())
+    <p>No categories assigned.</p>
+    @else
+    <div class="d-inline-block mb-3">
+        @foreach($collection->categories as $category)
+        <span class="badge badge-info">{{ $category->name }}</span>
+        @endforeach
+    </div>
+    @endif
+</div>
+
 <!-- Hidden table (DataTables needs this) -->
 <table id="cost-table" class="d-none">
     <thead>
@@ -27,7 +42,7 @@
 <!-- Cost form (for create & edit) -->
 <div class="fixed-bottom mb-3">
     <div class="d-flex justify-content-center">
-        <div id="costCreate" style="max-width: 500px;" class="bg-white p-3 shadow rounded">
+        <div id="costCreate" style="max-width: 800px;" class="bg-white p-3 shadow rounded">
             <form action="{{ route('costs.store') }}" method="POST">
                 @csrf
                 @method('POST')
@@ -37,11 +52,22 @@
                 <input type="hidden" name="id" id="cost_id">
 
                 <div class="d-flex flex-row gap-2">
-                    <div class="flex-fill mr-2">
+                    <div class="flex-fill w-auto mr-2">
                         <input type="text" class="form-control" name="name" placeholder="Cost Name" value="">
                     </div>
-                    <div class="flex-fill mr-2">
+                    <div class="mr-2 w-25">
                         <input type="number" class="form-control" name="price" placeholder="Cost Price" value="">
+                    </div>
+                    <div id="category-wrapper" class="flex-fill mr-2">
+                        <select
+                            name="category_id"
+                            class="custom-select w-auto"
+                            size="1"
+                            value="Select Category">
+                            @foreach($collection->categories as $category)
+                            <option value="{{ $category->id }}" class="p-1 rounded-lg">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Add</button>
@@ -53,7 +79,31 @@
 </div>
 
 @stop
+@section('css')
+<style>
+    .cost-actions {
+        display: none;
+        transform: translateY(-4px);
+        transition: 0.2s;
+    }
 
+    .cost-card:hover .cost-actions {
+        display: inline;
+        transform: translateY(0);
+    }
+
+    .edit-btn,
+    .delete-btn {
+        cursor: pointer;
+        opacity: 0.5;
+    }
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+        opacity: 1;
+    }
+</style>
+@stop
 @section('js')
 <script>
     let isEdit = false;
@@ -65,28 +115,35 @@
 
         data.forEach(cost => {
             let card = `
-                <div class="col-md-3 mb-1">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <p>${cost.name}</p>
-                                <p>$${cost.price}</p>
-                            </div>
+                <div class="col-md-3 p-1">
+                    <div 
+                    style="border: 1px solid #ddd;"
+                    class="cost-card 
+                    rounded-pill py-2 px-3 mb-2
+                    d-flex align-items-center justify-content-between">
+                        
+                        <div class="flexfill">
+                            <span class="mr-1 text-secondary">${cost.name}</span>
 
-                            <div class="mt-2">
-                                <button class="btn btn-sm btn-info">${cost.category ?? 'No Category'}</button>
-                                <button class="edit-btn btn btn-sm btn-warning" 
-                                    data-id="${cost.id}" 
-                                    data-name="${cost.name}" 
-                                    data-price="${cost.price}">
-                                    <i class="fas fa-fw fa-pencil-alt"></i>
-                                </button>                                
-                                <button class="delete-btn btn btn-sm btn-danger" 
-                                    data-id="${cost.id}">
-                                    <i class="fas fa-fw fa-trash"></i>
-                                </button>
+                            <div style="display: inline-block;">
+                                <div class="cost-actions">
+                                    <span class="edit-btn px-1" 
+                                        data-id="${cost.id}" 
+                                        data-name="${cost.name}" 
+                                        data-price="${cost.price}"
+                                        data-category="${cost.category ?? ''}">       
+                                        <i class="fas fa-edit"></i>
+                                    </span>               
+                                    <span class="delete-btn px-1" 
+                                        data-id="${cost.id}">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                </div>
                             </div>
+                            
                         </div>
+
+                        <span>${cost.price}</span>
                     </div>
                 </div>
                 `;
@@ -124,6 +181,8 @@
         $('input[name="name"]').val('');
         $('input[name="price"]').val('');
 
+        $('#category-wrapper').show();
+
         isEdit = false;
         currentId = null;
 
@@ -135,7 +194,7 @@
         processing: true,
         serverSide: true,
         ajax: '/user/collections/{{ $collection->id }}/costs',
-
+        pageLength: 25,
         columns: [{
                 data: 'name'
             },
@@ -198,11 +257,15 @@
         let id = btn.data('id');
         let name = btn.data('name');
         let price = btn.data('price');
+        let category = btn.data('category');
 
         // fill form
         $('#cost_id').val(id);
         $('input[name="name"]').val(name);
         $('input[name="price"]').val(price);
+        $('select[name="category_id"]').val(category === 'No Category' ? '' : category);
+
+        $('#category-wrapper').hide();
 
         // switch mode
         isEdit = true;

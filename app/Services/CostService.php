@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\Collection;
 use App\Repositories\CostRepository;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,6 @@ class CostService extends BaseService
     }
 
     public function findCategoryById(int $id): Model {
-        return Collection::find($id);
+        return Category::find($id);
     }
 }

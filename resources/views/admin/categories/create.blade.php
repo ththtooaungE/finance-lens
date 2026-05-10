@@ -31,6 +31,26 @@
                 @enderror
             </div>
 
+            <div class="form-group">
+                <label for="color">Color</label>
+
+                <div class="d-flex align-items-center">
+                    <input
+                        type="text"
+                        name="color"
+                        id="color"
+                        value="{{ old('color', '#ffffff') }}"
+                        class="form-control mr-2"
+                        title="Enter hex color or pick a color">
+
+                    <input
+                        type="color"
+                        id="color-picker"
+                        value="{{ old('color', '#ffffff') }}"
+                        style="width: 60px; height: 38px; border: none; background: transparent;">
+                </div>
+            </div>
+
             <div class="mb-3 form-check form-switch">
                 <input type="hidden" name="is_active" value="0">
                 <input
@@ -47,9 +67,32 @@
                 @enderror
             </div>
 
+
+
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
 
+@stop
+
+@section('js')
+<script>
+    // Color picker -> text input
+    $(document).on('input change', '#color-picker', function() {
+        let color = $(this).val();
+
+        $('#color').val(color);
+    });
+
+    // Text input -> color picker
+    $(document).on('input', '#color', function() {
+        let color = $(this).val();
+
+        // Accept only valid hex colors
+        if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)) {
+            $('#color-picker').val(color);
+        }
+    });
+</script>
 @stop

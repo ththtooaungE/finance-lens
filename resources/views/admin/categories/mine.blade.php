@@ -19,6 +19,7 @@
         <tr>
             <td scope="col">No</td>
             <td scope="col">Name</td>
+            <td scope="col">Color</td>
             <td scope="col">Active</td>
             <td scope="col">Created Time</td>
             <td scope="col">Actions</td>
@@ -43,6 +44,10 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'color',
+                    name: 'color'
                 },
                 {
                     data: 'is_active',

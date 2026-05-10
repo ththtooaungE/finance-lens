@@ -69,16 +69,12 @@ class CollectionController extends Controller
 
     public function create()
     {
-        $categories = Category::whereIn('user_id', [1, auth()->id()])->get();
+        $categories = Category::whereIn('user_id', [auth()->id()])->get();
         return view('collections.create', compact('categories'));
     }
 
     public function store(CollectionStoreRequest $request) 
     {
-        // \Log::info('Collection store request received', [
-        //     'user_id' => auth()->id(),
-        //     'request_data' => $request->all()
-        // ]);
         try {
             $data = $request->validated();
 
@@ -105,7 +101,7 @@ class CollectionController extends Controller
         }
 
         $collection = Collection::with('categories')->find($id);
-        $categories = Category::whereIn('user_id', [1, auth()->id()])->get();
+        $categories = Category::whereIn('user_id', [auth()->id()])->get();
         return view('collections.edit', compact('collection', 'categories'));
     }
 
@@ -164,12 +160,15 @@ class CollectionController extends Controller
         }
 
         $costs = $collection->costs()
-            ->with('category:id,name')
+            ->with('category:id,name,color')
             ->latest();
 
         return datatables()->of($costs)
             ->addColumn('category', function ($cost) {
                 return $cost->category->name ?? null;
+            })
+            ->addColumn('categoryColor', function ($cost) {
+                return $cost->category->color ?? null;
             })
             ->addColumn('actions', function ($cost) {
                 return ''; // not needed visually, but required

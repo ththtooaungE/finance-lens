@@ -18,7 +18,7 @@
     @else
     <div class="d-inline-block mb-3">
         @foreach($collection->categories as $category)
-        <span class="badge badge-info">{{ $category->name }}</span>
+        <span class="badge" style="background-color: {{ $category->color }};">{{ $category->name }}</span>
         @endforeach
     </div>
     @endif
@@ -53,7 +53,7 @@
 
                 <div class="d-flex flex-row gap-2">
                     <div class="flex-fill w-auto mr-2">
-                        <input type="text" class="form-control" name="name" placeholder="Cost Name" value="">
+                        <input type="text" class="form-control" name="name" placeholder="Cost Name" value="" autofocus>
                     </div>
                     <div class="mr-2 w-25">
                         <input type="number" class="form-control" name="price" placeholder="Cost Price" value="">
@@ -115,15 +115,22 @@
 
         data.forEach(cost => {
             let card = `
-                <div class="col-md-3 p-1">
-                    <div 
-                    style="border: 1px solid #ddd;"
-                    class="cost-card 
+            <div class="col-md-3 p-1">
+                <div 
+                    style="
+                        border: 1px solid #ddd;
+                        background: linear-gradient(
+                            to right,
+                            ${cost.categoryColor ?? '#ffffff'},
+                            rgba(255, 255, 255, 0)
+                        );
+                    "
+                    class="cost-card
                     rounded-pill py-2 px-3 mb-2
                     d-flex align-items-center justify-content-between">
                         
                         <div class="flexfill">
-                            <span class="mr-1 text-secondary">${cost.name}</span>
+                            <span class="mr-1 text-secondary">${cost.name.charAt(0).toUpperCase() + cost.name.slice(1)}</span>
 
                             <div style="display: inline-block;">
                                 <div class="cost-actions">

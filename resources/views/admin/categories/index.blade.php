@@ -12,8 +12,9 @@
         <tr>
             <td scope="col">No</td>
             <td scope="col">Name</td>
+            <td scope="col">Color</td>
             <td scope="col">Owner</td>
-            <td scope="col">Created Time</td>            
+            <td scope="col">Created Time</td>
         </tr>
     </thead>
 </table>
@@ -27,23 +28,29 @@
             serverSide: true,
             ajax: '{{ $ajaxUrl }}',
             columns: [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex',
-                orderable: false,
-                searchable: false
-            },
-            {
-                data: 'name',
-                name: 'name'
-            },
-            {
-                data: 'user.name',
-                name: 'user.name'
-            },
-            {
-                data: 'created_at',
-                name: 'created_at'
-            }]
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'color',
+                    name: 'color'
+                },
+                {
+                    data: 'user.name',
+                    name: 'user.name'
+                },
+
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                }
+            ]
         });
     });
 </script>

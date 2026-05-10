@@ -21,13 +21,32 @@
                 <input
                     type="text"
                     name="name"
-                    id="id"
+                    id="name"
                     value="{{ old('name', $category->name) }}"
                     class="form-control">
 
                 @error('name')
                 <span class="invalid-feedback d-block">{{ $message }}</span>
                 @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="color" class="form-control-label">Color</label><br>
+                <div class="d-flex">
+                    <input
+                        type="text"
+                        name="color"
+                        id="color"
+                        class="form-control"
+                        value="{{ old('color', $category->color ?? '#ffffff') }}"
+                        title="Enter hex color or pick a color">
+
+                    <input
+                        type="color"
+                        id="color-picker"
+                        value="{{ old('color', $category->color ?? '#ffffff') }}"
+                        style="width: 60px; height: 38px; border: none; background: transparent;">
+                </div>
             </div>
 
             <div class="mb-3 form-check form-switch">
@@ -50,5 +69,25 @@
         </form>
     </div>
 </div>
+
+@stop
+
+@section('js')
+<script>
+    $(document).on('input change', '#color-picker', function() {
+        let color = $(this).val();
+
+        $('#color').val(color);
+    })
+
+    $(document).on('input', '#color', function() {
+        let color = $(this).val();
+
+        // Accept only valid hex colors
+        if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(color)) {
+            $('#color-picker').val(color);
+        }
+    });
+</script>
 
 @stop

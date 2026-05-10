@@ -25,6 +25,7 @@ class CategoryController extends Controller
                 'id',
                 'user_id',
                 'name',
+                'color',
                 'is_active',
                 'created_at'
             )
@@ -34,10 +35,14 @@ class CategoryController extends Controller
 
             return datatables()
                 ->of($categories)
+                ->editColumn('color', function ($category) {
+                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
+                })
                 ->editColumn('created_at', function ($category) {
                     return $category->created_at->format('Y-m-d h:i');
                 })
                 ->addIndexColumn()
+                ->rawColumns(['color'])
                 ->make(true);
         }
         return view('admin.categories.index',[
@@ -53,6 +58,9 @@ class CategoryController extends Controller
 
             return datatables()
                 ->of($categories)
+                ->editColumn('color', function ($category) {
+                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
+                })
                 ->editColumn('is_active', function ($category) {
                 return $category->is_active
                     ? '<span class="badge badge-success">Active</span>'
@@ -74,7 +82,7 @@ class CategoryController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['actions', 'is_active'])
+                ->rawColumns(['color', 'actions', 'is_active'])
                 ->addIndexColumn()
                 ->make(true);
         }

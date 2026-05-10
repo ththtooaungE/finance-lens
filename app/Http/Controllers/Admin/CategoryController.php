@@ -31,12 +31,16 @@ class CategoryController extends Controller
                 'id',
                 'user_id',
                 'name',
+                'color',
                 'is_active',
                 'created_at'
-            );
+            )->with('user:id,name');
 
             return datatables()
                 ->of($categories)
+                ->editColumn('color', function ($category) {
+                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
+                })
                 ->editColumn('is_active', function ($category) {
                     return $category->is_active ? 'True' : '-';
                 })
@@ -44,6 +48,7 @@ class CategoryController extends Controller
                     return $category->created_at->format('Y-m-d h:i');
                 })
                 ->addIndexColumn()
+                ->rawColumns(['color'])
                 ->make(true);
         }
 
@@ -59,6 +64,9 @@ class CategoryController extends Controller
 
             return datatables()
                 ->of($categories)
+                ->editColumn('color', function ($category) {
+                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
+                })
                 ->editColumn('is_active', function ($category) {
                     return $category->is_active ? 'True' : '-';
                 })
@@ -79,12 +87,12 @@ class CategoryController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['actions'])
+                ->rawColumns(['color', 'actions'])
                 ->addIndexColumn()
                 ->make(true);
         }
 
-        return view('admin.categories.system', [
+        return view('admin.categories.mine', [
             'ajaxUrl' => route('admin.categories.system'),
             'createUrl' => route('admin.categories.create')
         ]);
@@ -111,7 +119,7 @@ class CategoryController extends Controller
 
             $this->service->create($data);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category created successfully!');
+            return redirect()->route('admin.categories.mine')->with('status', 'Category created successfully!');
 
         } catch (\Throwable $e) {
             \Log::error('Category store failed', [
@@ -122,12 +130,12 @@ class CategoryController extends Controller
         }
     }
 
-    public function edit(Request $request, $id) 
+    public function edit(int|string $id) 
     {
         $category = $this->service->find($id);
 
         if(!$category) {
-            return redirect()->route('admin.categories.index')->with('error', 'Category Not Found!');
+            return redirect()->route('admin.categories.mine')->with('error', 'Category Not Found!');
         }
 
         return view('admin.categories.edit', [
@@ -136,7 +144,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(CategoryUpdateRequest $request, $id) 
+    public function update(CategoryUpdateRequest $request, int|string $id) 
     {
         try {
             $category = $this->service->find($id);
@@ -150,7 +158,7 @@ class CategoryController extends Controller
             $data = $request->validated();
             $this->service->update($category->id, $data);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category updated successfully!');
+            return redirect()->route('admin.categories.mine')->with('status', 'Category updated successfully!');
 
         } catch (\Throwable $e) {
             \Log::error('Category update failed', [
@@ -172,7 +180,7 @@ class CategoryController extends Controller
 
             $this->service->delete($category->id);
 
-            return redirect()->route('admin.categories.index')->with('status', 'Category deleted successfully!');
+            return redirect()->route('admin.categories.mine')->with('status', 'Category deleted successfully!');
             
         } catch (\Throwable $e) {
             \Log::error('Category delete failed', [

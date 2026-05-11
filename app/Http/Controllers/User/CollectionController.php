@@ -156,23 +156,28 @@ class CollectionController extends Controller
         $collection = $this->collectionService->find($id);
 
         if (!$collection || $collection->user_id !== auth()->id()) {
-            return back()->withInput()->with('error', 'Collection not found or access denied!');
+            return response()->json([
+                'message' => 'Collection not found or access denied!'
+            ], 403);
         }
 
         $costs = $collection->costs()
             ->with('category:id,name,color')
-            ->latest();
+            ->latest()
+            ->get()
+            ->map(function ($cost) {
+                return [
+                    'id' => $cost->id,
+                    'name' => $cost->name,
+                    'price' => $cost->price,
+                    'category' => $cost->category->name ?? null,
+                    'categoryColor' => $cost->category->color ?? null,
+                    'actions' => '',
+                ];
+            });
 
-        return datatables()->of($costs)
-            ->addColumn('category', function ($cost) {
-                return $cost->category->name ?? null;
-            })
-            ->addColumn('categoryColor', function ($cost) {
-                return $cost->category->color ?? null;
-            })
-            ->addColumn('actions', function ($cost) {
-                return ''; // not needed visually, but required
-            })
-            ->make(true);
+        return response()->json([
+            'data' => $costs
+        ]);
     }
 }

@@ -7,22 +7,28 @@
 @stop
 
 @section('content')
-<p>{{ $collection->description }}</p>
 
-<!-- Collection's Categories -->
-<div>
-    <h5 class="d-inline-block">Categories:</h5>
-
-    @if($collection->categories->isEmpty())
-    <p>No categories assigned.</p>
-    @else
-    <div class="d-inline-block mb-3">
-        @foreach($collection->categories as $category)
-        <span class="badge" style="background-color: {{ $category->color }};">{{ $category->name }}</span>
-        @endforeach
+<div class="row gap-3 mb-1">
+    <div class="col-md-6" style="text-align: justify;">
+        <p>{{ $collection->description }}</p>
     </div>
-    @endif
+
+    <!-- Collection's Categories -->
+    <div class="col-md-6">
+        <h5 class="d-inline-block">Categories:</h5>
+
+        @if($collection->categories->isEmpty())
+        <p>No categories assigned.</p>
+        @else
+        <div class="d-inline-block mb-3">
+            @foreach($collection->categories as $category)
+            <span class="badge" style="background-color: {{ $category->color }};">{{ $category->name }}</span>
+            @endforeach
+        </div>
+        @endif
+    </div>
 </div>
+
 
 <!-- Hidden table (DataTables needs this) -->
 <table id="cost-table" class="d-none">
@@ -36,13 +42,25 @@
     </thead>
 </table>
 
-<!-- Cost Cards Container -->
-<div id="cost-card-container" class="row" style="padding-bottom: 100px;"></div>
+<div class="card">
+    <div class="card-body row">
+        <div class="btn-group mr-3">
+            <button
+                id="sort-price-asc"
+                class="btn btn-sm btn-info"
+                style="border-top-left-radius:25px; border-bottom-left-radius:25px; margin-right: 2px;">Hightest</button>
+            <button
+                id="sort-price-desc"
+                class="btn btn-sm btn-info"
+                style="margin-right: 2px;">Lowest</button>
+            <button
+                id="sort-category"
+                class="btn btn-sm btn-info"
+                style="border-top-right-radius:25px; border-bottom-right-radius:25px;">Category</button>
 
-<!-- Cost form (for create & edit) -->
-<div class="fixed-bottom mb-3">
-    <div class="d-flex justify-content-center">
-        <div id="costCreate" style="max-width: 800px;" class="bg-white p-3 shadow rounded">
+        </div>
+        <div id="costCreate">
+            <!-- Cost form (for create & edit) -->
             <form action="{{ route('costs.store') }}" method="POST">
                 @csrf
                 @method('POST')
@@ -78,6 +96,9 @@
     </div>
 </div>
 
+<!-- Cost Cards Container -->
+<div id="cost-card-container" class="row" style="padding-bottom: 100px;"></div>
+
 @stop
 @section('css')
 <style>
@@ -108,8 +129,9 @@
 <script>
     let isEdit = false;
     let currentId = null;
+    let showCategoryColor = false;
 
-    function renderCards(data) {
+    function renderCards(data, showCategoryColor) {
         let container = $('#cost-card-container');
         container.empty();
 
@@ -119,14 +141,16 @@
                 <div 
                     style="
                         border: 1px solid #ddd;
-                        background: linear-gradient(
-                            to right,
-                            ${cost.categoryColor ?? '#ffffff'},
-                            rgba(255, 255, 255, 0)
-                        );
+                        ${showCategoryColor ? `
+                            background: linear-gradient(
+                                to right,
+                                ${cost.categoryColor ?? '#ffffff'},
+                                rgba(255, 255, 255, 0)
+                            );
+                        ` : ''}
                     "
                     class="cost-card
-                    rounded-pill py-2 px-3 mb-2
+                    rounded-pill py-2 px-3 mb-3
                     d-flex align-items-center justify-content-between">
                         
                         <div class="flexfill">
@@ -150,7 +174,7 @@
                             
                         </div>
 
-                        <span>${cost.price}</span>
+                        <span>${cost.price % 1 == 0 ? parseInt(cost.price) : cost.price.toFixed(2)}</span>
                     </div>
                 </div>
                 `;
@@ -159,7 +183,7 @@
     }
 
     function handleSuccess(response, form) {
-        alert(response.message); // simple for now
+        // alert(response.message); // simple for now
 
         form.trigger('reset'); // clear inputs
 
@@ -199,9 +223,13 @@
 
     let table = $('#cost-table').DataTable({
         processing: true,
-        serverSide: true,
+        serverSide: false,
         ajax: '/user/collections/{{ $collection->id }}/costs',
-        pageLength: 25,
+
+        paging: false,
+        info: false,
+        lengthChange: false,
+
         columns: [{
                 data: 'name'
             },
@@ -212,15 +240,17 @@
                 data: 'category'
             },
             {
-                data: 'actions',
-                orderable: false,
-                searchable: false
+                data: 'actions'
             }
         ],
 
         drawCallback: function(settings) {
-            let data = settings.json.data;
-            renderCards(data);
+            let table = this.api();
+            let data = table.rows({
+                page: 'current'
+            }).data().toArray();
+
+            renderCards(data, showCategoryColor);
         }
     });
 
@@ -306,6 +336,21 @@
             }
         });
     });
+
+    $('#sort-price-asc').on('click', function() {
+        showCategoryColor = false;
+        table.order([1, 'asc']).draw();
+    });
+
+    $('#sort-price-desc').on('click', function() {
+        showCategoryColor = false;
+        table.order([1, 'desc']).draw();
+    });
+
+    $('#sort-category').on('click', function() {
+        showCategoryColor = true;
+        table.order([2, 'desc']).draw();
+    })
 </script>
 
 @stop

@@ -334,8 +334,8 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
+            'text' => 'Settings',
+            'url' => '#',
             'icon' => 'fas fa-fw fa-lock',
         ],
         // [
@@ -415,24 +415,6 @@ return [
             'icon' => 'far fa-fw fa-file',
             'url' => '/user/collections',
             'can' => 'isUser',
-        ],
-        [
-            'text' => 'March',
-            'icon' => 'far fa-fw fa-file',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'Febuary',
-            'icon' => 'far fa-fw fa-file',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'January',
-            'icon' => 'far fa-fw fa-file',
-            'icon_color' => 'cyan',
-            'url' => '#',
         ],
     ],
 

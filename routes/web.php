@@ -50,7 +50,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/categories/mine', [UserCategoryController::class, 'getMyCategory'])->name('user.categories.mine');
         Route::get('categories', [UserCategoryController::class, 'index'])->name('user.categories.index');
         Route::get('categories/create', [UserCategoryController::class, 'create'])->name('user.categories.create');
-
         Route::get('categories/{id}', [UserCategoryController::class, 'show'])->name('user.categories.show');
         Route::post('categories', [UserCategoryController::class, 'store'])->name('user.categories.store');
         Route::get('categories/{id}/edit', [UserCategoryController::class, 'edit'])->name('user.categories.edit');
@@ -59,11 +58,9 @@ Route::middleware('auth')->group(function () {
 
         // User Collection Routes
         Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class);
-
         Route::get('/collections/{id}/costs', [\App\Http\Controllers\User\CollectionController::class, 'costs'])->name('collections.costs');
 
         // User Cost Routes - API Endpoints
-
         Route::post('costs/store', [CostController::class, 'store'])->name('costs.store');
         Route::put('costs/{id}', [CostController::class, 'update'])->name('costs.update');
         Route::delete('costs/{id}', [CostController::class, 'delete'])->name('costs.delete');

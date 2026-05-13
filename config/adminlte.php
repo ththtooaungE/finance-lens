@@ -282,7 +282,7 @@ return [
     |
     */
 
-    'laravel_asset_bundling' => false,
+    'laravel_asset_bundling' => 'false',
     'laravel_css_path' => 'css/app.css',
     'laravel_js_path' => 'js/app.js',
 
@@ -517,12 +517,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],

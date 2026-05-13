@@ -18,10 +18,16 @@
             <div class="form-group">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" value="{{ old('name', $collection->name) }}" class="form-control">
+                @error('name')
+                <span class="invalid-feedback d-block">{{ $message }}</span>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="description" class="form-label">Description</label>
                 <textarea name="description" id="description" class="form-control">{{ old('description', $collection->description) }}</textarea>
+                @error('description')
+                <span class="invalid-feedback d-block">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -36,12 +42,19 @@
                     </option>
                     @endforeach
                 </select>
+                @error('category_ids')
+                <span class="invalid-feedback d-block">{{ $message }}</span>
+                @enderror
             </div>
 
-            <a href="{{ route('collections.index') }}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
+            <a href="{{ route('collections.index') }}" class="btn btn-secondary" style="min-width: 75px;">Go Back</a>
             <button type="submit" class="btn btn-primary" style="min-width: 75px;">Save</button>
 
         </form>
     </div>
 </div>
+@stop
+
+@section('js')
+@include('partials.flash')
 @stop

@@ -1,0 +1,30 @@
+.main-sidebar {
+    background-color: #2d53a7 !important;
+}
+
+.nav-sidebar .nav-link {
+    color: #d1d5db !important;
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white !important;
+}
+
+.nav-sidebar .nav-link.active {
+    background-color: #b76e29 !important;
+    color: white !important;
+}
+
+.nav-sidebar .nav-link {
+    border-radius: 12px;
+}
+
+.nav-sidebar .nav-item {
+    margin-bottom: 6px;
+}
+
+.nav-sidebar .nav-link p {
+    font-size: 15px;
+}
+

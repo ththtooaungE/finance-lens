@@ -18,23 +18,38 @@
                     @csrf
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+
+                        @error('name')
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description" name="description"></textarea>
+                        @error('description')
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
                         <label for="category_ids">Categories</label>
                         <select name="category_ids[]" id="category_ids" class="custom-select" size="7" multiple>
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg"
+                            @foreach(old('category_ids', []) as $selectedCategoryId)
+                                {{ $selectedCategoryId == $category->id ? 'selected' : '' }}
+                            @endforeach
+                            >{{ $category->name }}</option>
                             @endforeach
                         </select>
+                        @error('category_ids')
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                        @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Create Collection</button>
+                    <a href="{{ route('collections.index') }}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
+                    <button type="submit" class="btn btn-primary" style="min-width: 75px;">Create Collection</button>
                 </form>
             </div>
         </div>

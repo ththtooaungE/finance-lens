@@ -45,10 +45,10 @@ class CollectionController extends Controller
                 $btn = '<div class="btn-group" role="group">'
                         . '<a href="' . $viewUrl . '" class="btn btn-sm btn-info mr-1 rounded-sm">View</a>'
                         . '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1 rounded-sm">Edit</a>';
-                $btn .= '<form action="' . $deleteUrl . '" method="post" style="display: inline-block;">'
+                $btn .= '<form action="' . $deleteUrl . '" method="post" id="delete-form-' . $collection->id . '" style="display: inline-block;">'
                         . csrf_field()
                         . method_field('DELETE')
-                        . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>'
+                        . '<button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(' . $collection->id . ')">Delete</button>'
                         . '</form> </div>';
 
                     return $btn;
@@ -117,7 +117,7 @@ class CollectionController extends Controller
             $data = $request->validated();
             $this->collectionService->update($id, $data);
 
-            return redirect()->route('collections.index')->with('success', 'Collection updated successfully!');
+            return back()->with('success', 'Collection updated successfully!');
             
         } catch (Throwable $e) {
             \Log::error('Category store failed', [

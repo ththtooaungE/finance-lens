@@ -25,7 +25,7 @@ class CollectionStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'category_ids' => ['array'],
+            'category_ids' => ['array', 'required', 'min:1'],
             'category_ids.*' => ['integer', 'exists:categories,id'],
         ];
     }

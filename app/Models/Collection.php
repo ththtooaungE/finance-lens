@@ -12,7 +12,7 @@ class Collection extends Model
 {
     public function categories() : BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'category_collection');
+        return $this->belongsToMany(Category::class, 'category_collection')->withTimestamps();
         
     }
     public function costs(): HasMany

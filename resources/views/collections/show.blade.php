@@ -82,7 +82,7 @@
                             class="custom-select w-auto"
                             size="1"
                             value="Select Category">
-                            @foreach($collection->categories as $category)
+                            @foreach($categories as $category)
                             <option value="{{ $category->id }}" class="p-1 rounded-lg">{{ $category->name }}</option>
                             @endforeach
                         </select>

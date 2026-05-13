@@ -29,6 +29,9 @@
 @stop
 
 @section('js')
+@include('partials.flash')
+@include('partials.delete-confirm')
+
 <script>
     $(document).ready(function() {
         $('#categoryTable').DataTable({

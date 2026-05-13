@@ -45,7 +45,7 @@ class CategoryController extends Controller
                 ->rawColumns(['color'])
                 ->make(true);
         }
-        return view('admin.categories.index',[
+        return view('categories.index',[
             'ajaxUrl' => route('user.categories.index')
         ]);
     }
@@ -73,12 +73,10 @@ class CategoryController extends Controller
                     $deleteUrl = route('user.categories.destroy', $category->id);
 
                     $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-2">Edit</a>';
-                    $btn .= '<form action="'
-                        . $deleteUrl
-                        . '" method="post" style="display:inline-block">'
+                    $btn .= '<form action="' . $deleteUrl . '" method="post" id="delete-form-' . $category->id . '" style="display:inline-block">'
                         . csrf_field()
                         . method_field('DELETE')
-                        . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                        . '<button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete( '. $category->id . ')">Delete</button>
                     </form>';
                     return $btn;
                 })
@@ -86,14 +84,15 @@ class CategoryController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('admin.categories.mine', [
+        return view('categories.mine', [
             'ajaxUrl' => route('user.categories.mine'),
             'createUrl' => route('user.categories.create')
         ]);
     }
 
-    public function create() : View {
-        return view('admin.categories.create',[
+    public function create() : View 
+    {
+        return view('categories.create',[
             'storeUrl' => route('user.categories.store')
         ]);
     }
@@ -134,7 +133,7 @@ class CategoryController extends Controller
             return back()->with('error', 'Category Not Found');
         }
 
-        return view('admin.categories.edit', [
+        return view('categories.edit', [
             'category' => $category,
             'updateUrl' => route('user.categories.update', $category->id)
         ]);
@@ -152,7 +151,7 @@ class CategoryController extends Controller
             $data = $request->validated();
             $this->service->update($id, $data);
 
-            return redirect()->route('user.categories.mine')->with('success', 'Category updated successfully!');
+            return back()->with('success', 'Category updated successfully!');
 
         } catch (Throwable $e) {
             \Log::error('Category update failed', [

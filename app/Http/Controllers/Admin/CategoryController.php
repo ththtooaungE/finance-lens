@@ -52,7 +52,7 @@ class CategoryController extends Controller
                 ->make(true);
         }
 
-        return view('admin.categories.index', [
+        return view('categories.index', [
             'ajaxUrl' => route('admin.categories.index')
         ]);
     }
@@ -92,7 +92,7 @@ class CategoryController extends Controller
                 ->make(true);
         }
 
-        return view('admin.categories.mine', [
+        return view('categories.mine', [
             'ajaxUrl' => route('admin.categories.system'),
             'createUrl' => route('admin.categories.create')
         ]);
@@ -101,12 +101,12 @@ class CategoryController extends Controller
     public function getMine() {
         $categories = $this->service->getMine();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('categories.index', compact('categories'));
     }
 
     public function create(): View 
     {
-        return view('admin.categories.create',[
+        return view('categories.create',[
             'storeUrl' => route('admin.categories.store')
         ]);
     }
@@ -138,7 +138,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.mine')->with('error', 'Category Not Found!');
         }
 
-        return view('admin.categories.edit', [
+        return view('categories.edit', [
             'category' => $category,
             'updateUrl' => route('admin.categories.update', $category->id)
         ]);

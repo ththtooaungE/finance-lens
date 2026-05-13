@@ -31,14 +31,15 @@
 @stop
 
 @section('js')
+@include('partials.flash')
+@include('partials.delete-confirm')
 <script>
     $(document).ready(function() {
         $('#collectionTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('collections.index') }}",
-            columns: [
-                {
+            columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
                     orderable: false,

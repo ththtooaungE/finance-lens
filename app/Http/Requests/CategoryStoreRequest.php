@@ -24,7 +24,7 @@ class CategoryStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'color' => ['nullable', 'string', 'max:7'], // Assuming color is a hex code
+            'color' => ['required', 'string', 'max:7'], // Assuming color is a hex code
             'is_active' => ['required', 'boolean']
         ];
     }

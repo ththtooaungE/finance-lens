@@ -24,7 +24,7 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'color' => ['nullable' , 'string', 'max:7'],
+            'color' => ['required' , 'string', 'max:7'],
             'is_active' => ['required', 'boolean']
         ];
     }

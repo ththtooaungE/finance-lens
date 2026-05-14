@@ -64,7 +64,8 @@ class CollectionController extends Controller
     public function show(int| string $id) 
     {
         $collection = $this->collectionService->find($id);
-        return view('collections.show', compact('collection'));
+        $categories = $collection->categories()->orderBy('name', 'asc')->get();
+        return view('collections.show', compact('collection', 'categories'));
     }
 
     public function create()

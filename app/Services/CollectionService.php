@@ -36,7 +36,12 @@ class CollectionService extends BaseService
     public function delete(int|string $id): bool
     {        
         $collection = $this->repository->find($id);
+
+        // Detach pivot data
         $collection->categories()->detach();
+
+        // Delete related costs
+        $collection->costs()->delete();
         return parent::delete($id);
     }
 }

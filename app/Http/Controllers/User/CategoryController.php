@@ -181,7 +181,7 @@ class CategoryController extends Controller
                 'error' => $e->getMessage()
             ]);
 
-            return back()->with('error', 'Failed to delete category!');
+            return back()->with('error', $e->getMessage());
         }
     }
 }

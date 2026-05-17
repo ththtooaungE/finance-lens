@@ -8,7 +8,7 @@ use App\Http\Controllers\User\CostController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
 
 Route::get('/dashboard', function () {

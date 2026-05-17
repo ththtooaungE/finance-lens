@@ -1,47 +1,116 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/033521daa8.js" crossorigin="anonymous"></script>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body style="background-color: #D2E6D3; min-height: 100vh;">
+
+    <div class="container py-5">
+
+        <!-- Logo / Brand -->
+        <div class="text-center mb-5">
+            <h1
+                class="fw-bold"
+                style="
+                    color: #355E3B;
+                    letter-spacing: 1px;
+                ">
+                Finance Lens
+            </h1>
+
+            <p class="text-muted">
+                Track your spending and visualize your goals
+            </p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <div class="row align-items-center justify-content-center g-5">
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- FORM SIDE -->
+            <div class="col-lg-5">
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <div
+                    class="card border-0 shadow-lg rounded-4"
+                    style="background-color: rgba(255,255,255,0.9);">
+
+                    <div class="card-body p-4 p-lg-5">
+
+                        <h2 class="fw-bold mb-2">
+                            Login In Account
+                        </h2>
+
+                        <p class="text-muted mb-4">
+                            Start managing your finances today
+                        </p>
+
+                        <form action="{{ route('login') }}" method="POST">
+                            @csrf
+
+                            <div class="mb-3">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control rounded-pill py-2 px-4"
+                                    placeholder="Enter your email">
+                                @error('email')
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control rounded-pill py-2 px-4"
+                                    placeholder="Enter your password">
+                                @error('password')
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn w-100 rounded-pill text-white fw-bold py-2"
+                                style="background-color: #649857;">
+
+                                Log in
+
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+                <p class="text-center mt-4">
+                    Creat a new account?
+
+                    <a
+                        href="{{ route('register') }}"
+                        class="text-decoration-none fw-bold"
+                        style="color: #355E3B;">
+
+                        Sign Up
+
+                    </a>
+                </p>
+
+            </div>
+
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+</body>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>

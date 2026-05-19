@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -321,6 +321,11 @@ return [
             'can' => 'manage-blog',
         ],
         [
+            'text' => 'dashboard',
+            'url' => '/dashboard',
+            'icon' => 'fas fa-fw fa-chart-line'
+        ],
+        [
             'text' => 'Notifications',
             'url' => '#',
             'icon' => 'far fa-fw fa-file',
@@ -334,7 +339,7 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Settings',
+            'text' => 'Settings Soon',
             'url' => '#',
             'icon' => 'fas fa-fw fa-lock',
         ],
@@ -489,12 +494,12 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'location' => 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js',
                 ],
             ],
         ],

@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'dashboard',
+    'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -321,9 +321,16 @@ return [
             'can' => 'manage-blog',
         ],
         [
-            'text' => 'dashboard',
+            'text' => 'Dashboard',
+            'url' => '/admin/dashboard',
+            'icon' => 'fas fa-fw fa-chart-line',
+            'can' => 'isAdmin'
+        ],
+        [
+            'text' => 'Dashboard',
             'url' => '/dashboard',
-            'icon' => 'fas fa-fw fa-chart-line'
+            'icon' => 'fas fa-fw fa-chart-line',
+            'can' => 'isUser'
         ],
         [
             'text' => 'Notifications',
@@ -404,13 +411,13 @@ return [
         [
             'text' => 'View categories',
             'icon' => 'far fa-fw fa-file',
-            'url' => 'user/categories',
+            'url' => '/categories',
             'can' => 'isUser',
         ],
         [
             'text' => 'View my categories',
             'icon' => 'far fa-fw fa-file',
-            'url' => 'user/categories/mine',
+            'url' => '/categories/mine',
             'can' => 'isUser',
         ],
 
@@ -418,7 +425,7 @@ return [
         [
             'text' => 'Collections',
             'icon' => 'far fa-fw fa-file',
-            'url' => '/user/collections',
+            'url' => '/collections',
             'can' => 'isUser',
         ],
     ],

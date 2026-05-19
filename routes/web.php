@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CategoryController as UserCategoryController;
@@ -12,7 +13,6 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -22,6 +22,9 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::prefix('admin')->middleware('role:admin')->group(function() {
 
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+        // Admin User Management Routes
         Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
         Route::get('users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
@@ -43,7 +46,10 @@ Route::middleware('auth')->group(function () {
     });
 
     // User Routes
-    Route::prefix('user')->middleware('role:user')->group(function() {
+    Route::middleware('role:user')->group(function() {
+
+        // User Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // User Category Routes
         Route::get('/categories/mine', [UserCategoryController::class, 'getMyCategory'])->name('user.categories.mine');

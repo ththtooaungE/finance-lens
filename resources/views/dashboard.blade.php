@@ -10,67 +10,69 @@
 
 @section('content')
 
-<div class="row">
+<div class="row mb-3" style="gap: 0;">
 
-    <class class="col-lg-6 row">
-        
-        {{-- Category --}}
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body py-3 px-4">
+    <div class="col-lg-6  px-3">
+        <div class="row">
+            {{-- Category --}}
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body py-3 px-4">
 
-                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
 
-                        <div>
-                            <p class="text-muted mb-1 small font-weight-bold">
-                                Category
-                            </p>
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Category
+                                </p>
 
-                            <h3 class="mb-0 font-weight-bold text-success">
-                                {{ $categoryCount }}
-                            </h3>
-                        </div>
+                                <h3 class="mb-0 font-weight-bold text-success">
+                                    {{ $categoryCount }}
+                                </h3>
+                            </div>
 
-                        <div>
-                            <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            <div>
+                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            </div>
+
                         </div>
 
                     </div>
+                </div>
+            </div>
 
+            {{-- Collection --}}
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body py-3 px-4">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Collection
+                                </p>
+
+                                <h3 class="mb-0 font-weight-bold text-primary">
+                                    {{ $collectionCount }}
+                                </h3>
+                            </div>
+
+                            <div>
+                                <i class="fas fa-wallet fa-2x text-primary opacity-50"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Collection --}}
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card shadow-sm border-0">
-                <div class="card-body py-3 px-4">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-                            <p class="text-muted mb-1 small font-weight-bold">
-                                Collection
-                            </p>
-
-                            <h3 class="mb-0 font-weight-bold text-primary">
-                                {{ $collectionCount }}
-                            </h3>
-                        </div>
-
-                        <div>
-                            <i class="fas fa-wallet fa-2x text-primary opacity-50"></i>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </class>
+    </div>
 
     {{-- Table --}}
-    <div class="col-lg-6 mb-3">
+    <div class="col-lg-6 mb-3 px-3">
         <div class="card shadow-sm border-0">
 
             <div class="card-header bg-white">
@@ -117,8 +119,8 @@
 <div class="row" style="gap: 0;">
 
     <!-- Latest Collection Date Report -->
-    <div class="col-lg-6 p-3">
-        <div class=" card">
+    <div class="col-lg-6 px-3">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Latest Spending Chart Analysis By Date</h3>
             </div>
@@ -130,8 +132,8 @@
     </div>
 
     <!-- Latest Collection Category Report -->
-    <div class="col-lg-6 p-3">
-        <div class=" card">
+    <div class="col-lg-6 px-3">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Latest Spending Chart Analysis By Category</h3>
             </div>
@@ -178,8 +180,6 @@
 
 @section('js')
 <script>
-
-
     // Latest Collection Report By Date
     const latestCollectionDateReport = document.getElementById('latestCollectionDateReport').getContext('2d');
 
@@ -189,7 +189,7 @@
             labels: @json($latestCollectionDateReport['labels']),
 
             datasets: [{
-                label: 'Sales',
+                label: '',
                 data: @json($latestCollectionDateReport['data']),
                 backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1'],
                 borderWidth: 1
@@ -200,6 +200,11 @@
             scales: {
                 y: {
                     beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
                 }
             }
         }
@@ -225,10 +230,10 @@
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'right'
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Monthly Expense Breakdown'
                 }
             }
@@ -256,6 +261,11 @@
                 y: {
                     beginAtZero: true
                 }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
             }
         }
     });
@@ -280,10 +290,10 @@
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'right'
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Monthly Expense Breakdown'
                 }
 

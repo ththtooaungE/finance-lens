@@ -39,7 +39,7 @@ class BuildMenu
                 'text' => Str::limit($collection->name, 20),
                 'icon' => 'far fa-fw fa-file',
                 'icon_color' => 'cyan',
-                'url' => '/user/collections/' . $collection->id,
+                'url' => '/collections/' . $collection->id,
             ]);
         }
     }

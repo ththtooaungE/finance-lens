@@ -224,7 +224,7 @@
     let table = $('#cost-table').DataTable({
         processing: true,
         serverSide: false,
-        ajax: '/user/collections/{{ $collection->id }}/costs',
+        ajax: '/collections/{{ $collection->id }}/costs',
 
         paging: false,
         info: false,
@@ -265,7 +265,7 @@
         let method = 'POST';
 
         if (isEdit) {
-            url = `/user/costs/${currentId}`;
+            url = `/costs/${currentId}`;
             method = 'POST'; // Laravel needs POST + _method=PUT
             formData += '&_method=PUT';
         }
@@ -318,7 +318,7 @@
         if (!confirm('Are you sure you want to delete this cost?')) return;
 
         $.ajax({
-            url: '/user/costs/' + id,
+            url: '/costs/' + id,
             method: 'DELETE',
             data: {
                 _method: 'DELETE',

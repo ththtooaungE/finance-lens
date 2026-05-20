@@ -171,6 +171,7 @@ class CollectionController extends Controller
                     'id' => $cost->id,
                     'name' => $cost->name,
                     'price' => $cost->price,
+                    'date' => $cost->created_at,
                     'category' => $cost->category->name ?? null,
                     'categoryColor' => $cost->category->color ?? null,
                     'actions' => '',

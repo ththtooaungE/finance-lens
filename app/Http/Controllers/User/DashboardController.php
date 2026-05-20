@@ -115,6 +115,7 @@ class DashboardController extends Controller
 
         $previousCollectionByCategory = Collection::where('user_id', $userId)
             ->latest()
+            ->skip(1)
             ->with([
                 'costs' => function ($query) {
 

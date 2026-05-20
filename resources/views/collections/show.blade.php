@@ -37,6 +37,7 @@
             <th>Name</th>
             <th>Price</th>
             <th>Category</th>
+            <th>Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -46,20 +47,20 @@
     <div class="card-body row">
         <div class="btn-group mr-3">
             <button
-                id="sort-price-asc"
+                id="sort-price-desc"
                 class="btn btn-sm btn-info"
                 style="border-top-left-radius:25px; border-bottom-left-radius:25px; margin-right: 2px;">Hightest</button>
             <button
-                id="sort-price-desc"
+                id="sort-date"
                 class="btn btn-sm btn-info"
-                style="margin-right: 2px;">Lowest</button>
+                style="margin-right: 2px;">Latest</button>
             <button
                 id="sort-category"
                 class="btn btn-sm btn-info"
                 style="border-top-right-radius:25px; border-bottom-right-radius:25px;">Category</button>
 
         </div>
-        <div id="costCreate">
+        <div id="costCreate" class="col-xl-6">
             <!-- Cost form (for create & edit) -->
             <form action="{{ route('costs.store') }}" method="POST">
                 @csrf
@@ -70,13 +71,17 @@
                 <input type="hidden" name="id" id="cost_id">
 
                 <div class="d-flex flex-row gap-2">
-                    <div class="flex-fill w-auto mr-2">
-                        <input type="text" class="form-control" name="name" placeholder="Cost Name" value="" autofocus>
+                    <!-- Combined input -->
+                    <div class="flex-fill w-auto mr-2 ">
+                        <input
+                            type="text"
+                            id="combined_input"
+                            name="combined_input"
+                            class="form-control"
+                            placeholder="Enter Price and Cost Name" value="" autofocus>
                     </div>
-                    <div class="mr-2 w-25">
-                        <input type="number" class="form-control" name="price" placeholder="Cost Price" value="">
-                    </div>
-                    <div id="category-wrapper" class="flex-fill mr-2">
+
+                    <div id="category-wrapper" class="mr-2">
                         <select
                             name="category_id"
                             class="custom-select w-auto"
@@ -93,6 +98,13 @@
                 </div>
             </form>
         </div>
+
+        <div class="">
+            <p
+                id="grand-total-cost"
+                class="btn m-0"></p>
+        </div>
+
     </div>
 </div>
 
@@ -134,10 +146,14 @@
     function renderCards(data, showCategoryColor) {
         let container = $('#cost-card-container');
         container.empty();
+        let grandTotalCost = 0;
 
         data.forEach(cost => {
+            // Add to get Grand Total Cost
+            grandTotalCost += parseFloat(cost.price);
+
             let card = `
-            <div class="col-md-3 p-1">
+            <div class="col-lg-3 col-md-4 p-1">
                 <div 
                     style="
                         border: 1px solid #ddd;
@@ -179,6 +195,9 @@
                 </div>
                 `;
             container.append(card);
+
+            // Display the Grand Total Cost
+            $('#grand-total-cost').text('Grand Total Cost - ' + grandTotalCost);
         });
     }
 
@@ -240,6 +259,9 @@
                 data: 'category'
             },
             {
+                data: 'date'
+            },
+            {
                 data: 'actions'
             }
         ],
@@ -259,7 +281,37 @@
         e.preventDefault(); // ❗ stop normal form submit
 
         let form = $(this);
-        let formData = form.serialize();
+
+        // Example:
+        // "2000 Breakfast"
+        let combinedInput = $('#combined_input').val().trim();
+
+        let price = 0;
+        let name = combinedInput;
+
+        // Match: starts with number + space + remaining text
+        let match = combinedInput.match(/^(\d+)\s+(.+)$/);
+
+        if (match) {
+            price = match[1];
+            name = match[2];
+        }
+
+        // Build data manually
+        let formData = form.serializeArray();
+
+        // Add separated values
+        formData.push({
+            name: 'price',
+            value: price
+        });
+        formData.push({
+            name: 'name',
+            value: name
+        });
+
+        // Convert back to query string
+        formData = $.param(formData);
 
         let url = form.attr('action');
         let method = 'POST';
@@ -350,6 +402,11 @@
     $('#sort-category').on('click', function() {
         showCategoryColor = true;
         table.order([2, 'desc']).draw();
+    })
+
+    $('#sort-date').on('click', function() {
+        showCategoryColor = true;
+        table.order([3, 'desc']).draw();
     })
 </script>
 

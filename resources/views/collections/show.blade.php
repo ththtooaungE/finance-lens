@@ -249,6 +249,8 @@
         info: false,
         lengthChange: false,
 
+        order: [], // prevent automatic sorting
+
         columns: [{
                 data: 'name'
             },
@@ -268,6 +270,8 @@
 
         drawCallback: function(settings) {
             let table = this.api();
+
+            // returns DataTables' processed data, not the raw AJAX response
             let data = table.rows({
                 page: 'current'
             }).data().toArray();
@@ -405,7 +409,7 @@
     })
 
     $('#sort-date').on('click', function() {
-        showCategoryColor = true;
+        showCategoryColor = false;
         table.order([3, 'desc']).draw();
     })
 </script>

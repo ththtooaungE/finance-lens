@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryStatusToggleRequest;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
@@ -38,9 +39,6 @@ class CategoryController extends Controller
                 ->editColumn('color', function ($category) {
                     return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
                 })
-                ->editColumn('created_at', function ($category) {
-                    return $category->created_at->format('Y-m-d h:i');
-                })
                 ->addIndexColumn()
                 ->rawColumns(['color'])
                 ->make(true);
@@ -61,12 +59,29 @@ class CategoryController extends Controller
                 ->editColumn('color', function ($category) {
                     return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
                 })
-                ->editColumn('is_active', function ($category) {
-                return $category->is_active
-                    ? '<span class="badge badge-success">Active</span>'
-                    : '<span class="badge badge-secondary">Inactive</span>';                })
+                ->addColumn('toggle-status', function ($category) {
+
+                    $checked = $category->is_active ? 'checked' : '';
+
+                    return '
+                        <div class="custom-control custom-switch custom-switch-on-success">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input toggle-status"
+                                id="switch-' . $category->id . '"
+                                data-id="' . $category->id . '"
+                                ' . $checked . '
+                            >
+
+                            <label
+                                class="custom-control-label"
+                                for="switch-' . $category->id . '">
+                            </label>
+                        </div>
+                    ';
+                })
                 ->editColumn('created_at', function ($category) {
-                    return optional($category->created_at)->format('Y-m-d h:i');
+                    return optional($category->created_at)->format('Y M d h:i');
                 })
                 ->addColumn('actions', function ($category) {
                     $editUrl = route('user.categories.edit', $category->id);
@@ -80,7 +95,7 @@ class CategoryController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['color', 'actions', 'is_active'])
+                ->rawColumns(['color', 'actions', 'toggle-status'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -181,6 +196,31 @@ class CategoryController extends Controller
                 'error' => $e->getMessage()
             ]);
 
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function statusToggle(CategoryStatusToggleRequest $request, int|string $id) 
+    {
+        try {
+            // return $request->all();
+            $category = Category::where('user_id', auth()->id())
+                ->findOrFail($id);
+
+            
+            if (!$category) {
+                \Log::info('Category does not exist');
+                return back()->with('error', 'Category Not Found');
+            }
+
+            \Log::info('Category exists');
+            return Category::find($id)->update([
+                'is_active' => $request->is_active,
+            ]);
+            // return $this->service->update($id, $request->validated());
+        } catch (\Throwable $e) {
+            \Log::info('Redirect');
+            \Log::info($e->getMessage());
             return back()->with('error', $e->getMessage());
         }
     }

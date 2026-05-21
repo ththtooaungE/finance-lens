@@ -14,7 +14,6 @@
             <td scope="col">Name</td>
             <td scope="col">Color</td>
             <td scope="col">Owner</td>
-            <td scope="col">Created Time</td>
         </tr>
     </thead>
 </table>
@@ -44,11 +43,6 @@
                 {
                     data: 'user.name',
                     name: 'user.name'
-                },
-
-                {
-                    data: 'created_at',
-                    name: 'created_at'
                 }
             ]
         });

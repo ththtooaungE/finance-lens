@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
         Route::get('categories/{id}', [UserCategoryController::class, 'show'])->name('user.categories.show');
         Route::post('categories', [UserCategoryController::class, 'store'])->name('user.categories.store');
         Route::get('categories/{id}/edit', [UserCategoryController::class, 'edit'])->name('user.categories.edit');
+        Route::put('categories/{id}/status-toggle', [UserCategoryController::class, 'statusToggle'])->name('user.categories.status');
         Route::put('categories/{id}', [UserCategoryController::class, 'update'])->name('user.categories.update');
         Route::delete('categories/{id}', [UserCategoryController::class, 'destroy'])->name('user.categories.destroy');
 

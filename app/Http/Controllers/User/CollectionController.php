@@ -70,7 +70,9 @@ class CollectionController extends Controller
 
     public function create()
     {
-        $categories = Category::whereIn('user_id', [auth()->id()])->get();
+        $categories = Category::whereIn('user_id', [auth()->id()])
+            ->where('is_active', true)
+            ->get();
         return view('collections.create', compact('categories'));
     }
 
@@ -102,7 +104,7 @@ class CollectionController extends Controller
         }
 
         $collection = Collection::with('categories')->find($id);
-        $categories = Category::whereIn('user_id', [auth()->id()])->get();
+        $categories = Category::whereIn('user_id', [auth()->id()])->where('is_active', true)->get();
         return view('collections.edit', compact('collection', 'categories'));
     }
 

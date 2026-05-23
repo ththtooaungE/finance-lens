@@ -13,12 +13,22 @@ Route::get('/', function () {
     return view('landing');
 });
 
+Route::get('/debug-upload', function () {
+    return [
+        'upload_max_filesize' => ini_get('upload_max_filesize'),
+        'post_max_size' => ini_get('post_max_size'),
+        'tmp_dir' => ini_get('upload_tmp_dir'),
+    ];
+});
 
 Route::middleware('auth')->group(function () {
+
+    // Admin & User Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/avatar', [ProfileController::class, 'avatar'])->middleware('auth')->name('avatar.show');
+    
     // Admin Routes
     Route::prefix('admin')->middleware('role:admin')->group(function() {
 

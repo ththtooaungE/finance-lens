@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -26,15 +27,31 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+            $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+            $user->fill($request->validated());
 
-        $request->user()->save();
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            if ($request->hasFile('avatar')) {
+
+                if ($user->avatar_url) {
+                    Storage::disk('local')->delete($user->avatar_url);
+                }
+
+                $path = $request->file('avatar')->storeAs(
+                    'avatars', $request->user()->id . '.jpg', 'local'
+                    );
+
+                $user->avatar_url = $path;
+            }
+
+            $user->save();
+
+            return Redirect::route('profile.edit')
+                ->with('status', 'profile-updated');
     }
 
     /**
@@ -56,5 +73,14 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function avatar(Request $request)
+    {
+        $user = $request->user();
+
+        abort_unless($user->avatar_url, 404);
+
+        return Storage::response($user->avatar_url);
     }
 }

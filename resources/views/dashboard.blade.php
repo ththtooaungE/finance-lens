@@ -12,67 +12,8 @@
 
 <div class="row mb-3" style="gap: 0;">
 
-    <div class="col-lg-6  px-3">
-        <div class="row">
-            {{-- Category --}}
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body py-3 px-4">
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div>
-                                <p class="text-muted mb-1 small font-weight-bold">
-                                    Category
-                                </p>
-
-                                <h3 class="mb-0 font-weight-bold text-success">
-                                    {{ $categoryCount }}
-                                </h3>
-                            </div>
-
-                            <div>
-                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            {{-- Collection --}}
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body py-3 px-4">
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div>
-                                <p class="text-muted mb-1 small font-weight-bold">
-                                    Collection
-                                </p>
-
-                                <h3 class="mb-0 font-weight-bold text-primary">
-                                    {{ $collectionCount }}
-                                </h3>
-                            </div>
-
-                            <div>
-                                <i class="fas fa-wallet fa-2x text-primary opacity-50"></i>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
     {{-- Table --}}
-    <div class="col-lg-6 mb-3 px-3">
+    <div class="col-lg-6 col-md-12 mb-3 px-3">
         <div class="card shadow-sm border-0">
 
             <div class="card-header bg-white">
@@ -99,8 +40,8 @@
                         <tr>
                             <td>No</td>
                             <td>{{ $collection->name }}</td>
-                            <td></td>
-                            <td>{{ $collection->created_at?->format('Y-m-d h:i') }}</td>
+                            <td>{{ $collection->costs[0]->total_cost }} MMK</td>
+                            <td>{{ $collection->created_at?->format('Y M d') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -109,6 +50,138 @@
 
             </div>
 
+        </div>
+    </div>
+
+
+    {{-- Widgets --}}
+    <div class="col-lg-3 col-md-6 px-3">
+        <div class="d-flex flex-wrap" style="column-gap: 15px;">
+
+            {{-- Category --}}
+            <div class="flex-fill">
+                <div class="card shadow-sm border-0" style="min-height: 110px">
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Category
+                                </p>
+                                <h3 class="mb-0 font-weight-bold text-success">
+                                    {{ $categoryCount }}
+                                </h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Category --}}
+            <div class="flex-fill">
+                <div class="card shadow-sm border-0" style="min-height: 110px">
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Category
+                                </p>
+                                <h3 class="mb-0 font-weight-bold text-success">
+                                    {{ $categoryCount }}
+                                </h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- Category --}}
+            <div class="flex-fill">
+                <div class="card shadow-sm border-0" style="min-height: 110px">
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Category
+                                </p>
+                                <h3 class="mb-0 font-weight-bold text-success">
+                                    {{ $categoryCount }}
+                                </h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Collection --}}
+            <div class="flex-fill">
+                <div class="card shadow-sm border-0" style="min-height: 110px">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Collection
+                                </p>
+
+                                <h3 class="mb-0 font-weight-bold text-primary">
+                                    {{ $collectionCount }}
+                                </h3>
+                            </div>
+
+                            <div>
+                                <i class="fas fa-wallet fa-2x text-primary opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- PROFILE --}}
+    <div class="col-lg-3 mb-3 d-flex">
+        <div class="card shadow-sm border-0 w-100">
+            <div class="card-body py-3 px-3 d-flex flex-column justify-content-center align-items-center text-center">
+
+                @if(auth()->user()->avatar_url)
+                <img
+                    src="{{ route('avatar.show') }}"
+                    alt="Avatar"
+                    class="rounded-circle mb-2"
+                    style="
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                ">
+                @endif
+
+                <h5 class="font-weight-bold mb-1">
+                    {{ auth()->user()->name }}
+                </h5>
+
+                <p class="text-muted small mb-0">
+                    Welcome back
+                </p>
+
+            </div>
         </div>
     </div>
 

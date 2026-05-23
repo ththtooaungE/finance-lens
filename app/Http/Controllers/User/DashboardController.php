@@ -25,7 +25,18 @@ class DashboardController extends Controller
         $recentCollections = Collection::where('user_id', $userId)
             ->latest()
             ->take(5)
+            ->with([
+                'costs' => function($query) {
+                    $query->selectRaw('
+                        collection_id,
+                        SUM(price) as total_cost
+                    ')
+                    ->groupBy('collection_id');
+                }
+            ])
             ->get();
+
+            // return $recentCollections;
 
         /*
     |--------------------------------------------------------------------------

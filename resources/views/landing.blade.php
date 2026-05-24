@@ -21,7 +21,9 @@
         }
 
         .navbar-nav .nav-link:hover {
-            background-color: #f8f9fa;
+            background-color: #c3e0b8;
+            color: #77a06a !important;
+            /* Forces the color to change */
             transition: color 0.3s ease;
             border-radius: 4px;
         }
@@ -66,7 +68,7 @@
 
                     @auth
                     <li class="nav-item" style="min-width: 100px; font-size: 14px;">
-                        <a class="nav-link" href="{{ route('dashboard') }}">
+                        <a class="nav-link" href="{{ route('redirect.dashboard') }}">
                             DASHBOARD
                         </a>
                     </li>
@@ -112,7 +114,7 @@
                         class="img-fluid rounded shadow">
 
                 </div>
-                
+
                 <!-- Text -->
                 <div class="col-lg-6 p-lg-4">
 

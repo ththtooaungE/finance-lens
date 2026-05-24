@@ -64,6 +64,27 @@ class CategoryController extends Controller
 
             return datatables()
                 ->of($categories)
+                ->addColumn('toggle-status', function ($category) {
+
+                    $checked = $category->is_active ? 'checked' : '';
+
+                    return '
+                        <div class="custom-control custom-switch custom-switch-on-success">
+                            <input
+                                type="checkbox"
+                                class="custom-control-input toggle-status"
+                                id="switch-' . $category->id . '"
+                                data-id="' . $category->id . '"
+                                ' . $checked . '
+                            >
+
+                            <label
+                                class="custom-control-label"
+                                for="switch-' . $category->id . '">
+                            </label>
+                        </div>
+                    ';
+                })
                 ->editColumn('color', function ($category) {
                     return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
                 })
@@ -71,7 +92,7 @@ class CategoryController extends Controller
                     return $category->is_active ? 'True' : '-';
                 })
                 ->editColumn('created_at', function ($category) {
-                    return $category->created_at->format('Y-m-d h:i');
+                    return $category->created_at->format('Y M d h:i');
                 })
                 ->addColumn('actions', function ($category) {
                     $editUrl = route('admin.categories.edit', $category->id);
@@ -87,7 +108,7 @@ class CategoryController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['color', 'actions'])
+                ->rawColumns(['toggle-status', 'color', 'actions'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -107,7 +128,9 @@ class CategoryController extends Controller
     public function create(): View 
     {
         return view('categories.create',[
-            'storeUrl' => route('admin.categories.store')
+            'storeUrl' => route('admin.categories.store'),
+            'backUrl' => route('admin.categories.system')
+
         ]);
     }
 
@@ -140,7 +163,8 @@ class CategoryController extends Controller
 
         return view('categories.edit', [
             'category' => $category,
-            'updateUrl' => route('admin.categories.update', $category->id)
+            'updateUrl' => route('admin.categories.update', $category->id),
+            'backUrl' => route('admin.categories.system')
         ]);
     }
 

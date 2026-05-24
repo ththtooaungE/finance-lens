@@ -23,6 +23,17 @@ Route::get('/debug-upload', function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Redirect Routes
+    Route::get('/redirect-dashboard', function () {
+
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('dashboard');
+
+    })->name('redirect.dashboard');
+
+
     // Admin & User Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,6 +43,7 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::prefix('admin')->middleware('role:admin')->group(function() {
 
+        // Admin Dashboard Routes
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
         // Admin User Management Routes

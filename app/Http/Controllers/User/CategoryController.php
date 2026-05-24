@@ -205,23 +205,17 @@ class CategoryController extends Controller
     public function statusToggle(CategoryStatusToggleRequest $request, int|string $id) 
     {
         try {
-            // return $request->all();
             $category = Category::where('user_id', auth()->id())
                 ->findOrFail($id);
 
-            
             if (!$category) {
-                \Log::info('Category does not exist');
                 return back()->with('error', 'Category Not Found');
             }
 
-            \Log::info('Category exists');
             return Category::find($id)->update([
                 'is_active' => $request->is_active,
             ]);
-            // return $this->service->update($id, $request->validated());
         } catch (\Throwable $e) {
-            \Log::info('Redirect');
             \Log::info($e->getMessage());
             return back()->with('error', $e->getMessage());
         }

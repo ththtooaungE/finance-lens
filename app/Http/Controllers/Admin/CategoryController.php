@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryStatusToggleRequest;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
@@ -60,7 +61,7 @@ class CategoryController extends Controller
     public function getSystemCategory(Request $request)
     {
         if($request->ajax()) {
-            $categories = $this->service->getSystemCategories();
+            $categories = $this->service->getMine();
 
             return datatables()
                 ->of($categories)
@@ -101,10 +102,11 @@ class CategoryController extends Controller
                     $btn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-2">Edit</a>';
                     $btn .= '<form action="'
                         . $deleteUrl
-                        . '" method="post" style="display:inline-block">'
+                        . '" method="post" id="delete-form-' . $category->id
+                        . '" style="display:inline-block">'
                         . csrf_field()
                         . method_field('DELETE')
-                        . '<button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</button>
+                        . '<button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete( ' . $category->id . ')">Delete</button>
                     </form>';
                     return $btn;
                 })
@@ -130,7 +132,6 @@ class CategoryController extends Controller
         return view('categories.create',[
             'storeUrl' => route('admin.categories.store'),
             'backUrl' => route('admin.categories.system')
-
         ]);
     }
 
@@ -142,7 +143,7 @@ class CategoryController extends Controller
 
             $this->service->create($data);
 
-            return redirect()->route('admin.categories.mine')->with('status', 'Category created successfully!');
+            return redirect()->route('admin.categories.system')->with('success', 'Category created successfully!');
 
         } catch (\Throwable $e) {
             \Log::error('Category store failed', [
@@ -182,8 +183,7 @@ class CategoryController extends Controller
             $data = $request->validated();
             $this->service->update($category->id, $data);
 
-            return redirect()->route('admin.categories.mine')->with('status', 'Category updated successfully!');
-
+            return back()->with('success', 'Category updated successfully!');
         } catch (\Throwable $e) {
             \Log::error('Category update failed', [
                 'error' => $e->getMessage()
@@ -193,7 +193,26 @@ class CategoryController extends Controller
         }
     }
 
-    public function delete($id) 
+    public function statusToggle(CategoryStatusToggleRequest $request, int|string $id)
+    {
+        try {
+            $category = Category::where('user_id', auth()->id())
+                ->findOrFail($id);
+
+            if (!$category) {
+                return back()->with('error', 'Category Not Found');
+            }
+
+            return Category::find($id)->update([
+                'is_active' => $request->is_active,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::info($e->getMessage());
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy($id) 
     {
         try {
             $category = $this->service->find($id);
@@ -204,14 +223,14 @@ class CategoryController extends Controller
 
             $this->service->delete($category->id);
 
-            return redirect()->route('admin.categories.mine')->with('status', 'Category deleted successfully!');
+            return redirect()->route('admin.categories.system')->with('success', 'Category deleted successfully!');
             
         } catch (\Throwable $e) {
             \Log::error('Category delete failed', [
                 'error' => $e->getMessage()
             ]);
 
-            return back()->withInput()->with('error', 'Failed to delete category.');
+            return back()->with('error', $e->getMessage());
         }
     }
 

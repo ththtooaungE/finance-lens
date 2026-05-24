@@ -324,7 +324,7 @@
             datasets: [{
                 label: 'Previous Spending Graph',
                 data: @json($previousCollectionDateReport['data']),
-                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1'],
+                backgroundColor: ['#007bff'],
                 borderWidth: 1
             }]
         },

@@ -39,7 +39,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/avatar', [ProfileController::class, 'avatar'])->middleware('auth')->name('avatar.show');
-    
+
+    // Admin & User Routes - Category Status Toggle - Ajax Route
+    Route::patch('categories/{id}/status-toggle', [CategoryController::class, 'statusToggle'])->name('admin.users.update');
+
+
     // Admin Routes
     Route::prefix('admin')->middleware('role:admin')->group(function() {
 
@@ -51,6 +55,8 @@ Route::middleware('auth')->group(function () {
         Route::get('users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');
+        // Ajax Route
+        Route::patch('users/{id}/status-toggle', [UserController::class, 'statusToggle'])->name('admin.users.update');
 
         // Admin Category Routes
         Route::get('/categories/system', [CategoryController::class, 'getSystemCategory'])->name('admin.categories.system');
@@ -80,7 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::get('categories/{id}', [UserCategoryController::class, 'show'])->name('user.categories.show');
         Route::post('categories', [UserCategoryController::class, 'store'])->name('user.categories.store');
         Route::get('categories/{id}/edit', [UserCategoryController::class, 'edit'])->name('user.categories.edit');
-        Route::put('categories/{id}/status-toggle', [UserCategoryController::class, 'statusToggle'])->name('user.categories.status');
         Route::put('categories/{id}', [UserCategoryController::class, 'update'])->name('user.categories.update');
         Route::delete('categories/{id}', [UserCategoryController::class, 'destroy'])->name('user.categories.destroy');
 

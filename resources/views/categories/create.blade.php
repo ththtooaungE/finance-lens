@@ -72,7 +72,7 @@
             </div>
 
             <br>
-            <a href="{{ route('user.categories.index') }}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
+            <a href="{{ $backUrl}}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
             <button type="submit" class="btn btn-primary" style="min-width: 75px;">Save</button>
         </form>
     </div>

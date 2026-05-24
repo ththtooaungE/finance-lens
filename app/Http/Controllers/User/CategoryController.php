@@ -56,9 +56,6 @@ class CategoryController extends Controller
 
             return datatables()
                 ->of($categories)
-                ->editColumn('color', function ($category) {
-                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
-                })
                 ->addColumn('toggle-status', function ($category) {
 
                     $checked = $category->is_active ? 'checked' : '';
@@ -79,6 +76,9 @@ class CategoryController extends Controller
                             </label>
                         </div>
                     ';
+                })
+                ->editColumn('color', function ($category) {
+                    return '<span class="badge badge-pill" style="background-color: ' . $category->color . ';">&nbsp;&nbsp;</span>';
                 })
                 ->editColumn('created_at', function ($category) {
                     return optional($category->created_at)->format('Y M d h:i');
@@ -108,7 +108,8 @@ class CategoryController extends Controller
     public function create() : View 
     {
         return view('categories.create',[
-            'storeUrl' => route('user.categories.store')
+            'storeUrl' => route('user.categories.store'),
+            'backUrl' => route('user.categories.mine')
         ]);
     }
 
@@ -140,7 +141,7 @@ class CategoryController extends Controller
         return view('user.categories.show', compact('category'));
     }
 
-    public function edit(int|string $id) : View {
+    public function edit(int|string $id) {
         $category = Category::where('user_id', auth()->id())
             ->findOrFail($id);
 
@@ -150,7 +151,8 @@ class CategoryController extends Controller
 
         return view('categories.edit', [
             'category' => $category,
-            'updateUrl' => route('user.categories.update', $category->id)
+            'updateUrl' => route('user.categories.update', $category->id),
+            'backUrl' => route('user.categories.mine'),
         ]);
     }
 

@@ -80,7 +80,7 @@
 
         $.ajax({
             url: `/categories/${id}/status-toggle`,
-            method: 'PUT',
+            method: 'PATCH',
 
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),

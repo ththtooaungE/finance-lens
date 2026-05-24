@@ -18,7 +18,7 @@
             <th>Verified</th>
             <th>Register Date</th>
             <th>Actions</th>
-            
+
         </tr>
     </thead>
 </table>
@@ -45,8 +45,10 @@
                     name: 'email'
                 },
                 {
-                    data: 'is_active',
-                    name: 'is_active'
+                    data: 'toggle-status',
+                    name: 'toggle-status',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'email_verified_at',
@@ -64,6 +66,29 @@
                 }
             ]
         });
+    });
+
+    $(document).on('change', '.toggle-status', function() {
+        let id = $(this).data('id');
+
+        let status = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            url: `/admin/users/${id}/status-toggle`,
+            method: 'PATCH',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                is_active: status
+            },
+
+            success: function(response) {
+                console.log(response);
+            },
+
+            error: function(xhr) {
+                alert('Something went wrong');
+            }
+        })
     });
 </script>
 @stop

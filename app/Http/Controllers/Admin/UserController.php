@@ -25,8 +25,25 @@ class UserController extends Controller
 
             return datatables()
                 ->of($users)
-                ->editColumn('is_active', function ($user) {
-                    return $user->is_active ? 'Active' : 'Inactive';
+                ->addColumn('toggle-status', function ($user) {
+                    $checked = $user->is_active ? 'checked' : '';
+
+                    return '
+                        <div class="custom-control custom-switch custom-switch-on-success">
+                            <input
+                                type="checkbox"
+                                name="toggle-status"
+                                class="custom-control-input toggle-status"
+                                id="switch-' . $user->id . '"
+                                data-id="' . $user->id .'"
+                                ' . $checked . '
+                            >
+                            <label
+                                class="custom-control-label"
+                                for="switch-' . $user->id . '">
+                            </label>
+                        </div>
+                    ';
                 })
                 ->editColumn('email_verified_at', function ($user) {
                     return $user->email_verified_at ? 'Verified' : 'Unverified';
@@ -46,7 +63,7 @@ class UserController extends Controller
                     </form>';
                     return $btn;
                 })
-                ->rawColumns(['actions'])
+                ->rawColumns(['toggle-status', 'actions'])
                 ->make(true);
         }
 
@@ -70,6 +87,21 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('status', 'User updated successfully!');
     }
 
+    public function statusToggle(Request $request, $id)
+    {
+        $data = $request->validate([
+            'is_active' => 'required|boolean'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'User status updated successfully!'
+        ]);    
+    }
+
     public function destroy($id)
     {
         $user = User::findOrFail($id);
@@ -78,7 +110,4 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('status', 'User deleted successfully!');
     }
 
-    public function statusToggle(Request $request, $id) {
-        
-    }
 }

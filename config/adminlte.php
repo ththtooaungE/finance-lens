@@ -339,6 +339,47 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
+
+        ['header' => 'Collections'],
+        [
+            'key' => 'collections-menu',
+            'text' => 'Collections',
+            'icon' => 'far fa-fw fa-file',
+            'url' => '/collections',
+            'can' => 'isUser',
+        ],
+
+        [
+            'text' => 'Users',
+            'icon' => 'far fa-fw fa-user',
+            'url' => 'admin/users',
+            'can' => 'isAdmin',
+        ],
+        ['header' => 'Categories'],
+        [
+            'text' => 'View all categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'admin/categories',
+            'can' => 'isAdmin',
+        ],
+        [
+            'text' => 'System categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => 'admin/categories/system',
+            'can' => 'isAdmin',
+        ],
+        [
+            'text' => 'View categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => '/categories',
+            'can' => 'isUser',
+        ],
+        [
+            'text' => 'View my categories',
+            'icon' => 'far fa-fw fa-file',
+            'url' => '/categories/mine',
+            'can' => 'isUser',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
@@ -388,46 +429,7 @@ return [
         //         ],
         //     ],
         // ],
-        [
-            'text' => 'Users',
-            'icon' => 'far fa-fw fa-user',
-            'url' => 'admin/users',
-            'can' => 'isAdmin',
-        ],
 
-        ['header' => 'Categories'],
-        [
-            'text' => 'View all categories',
-            'icon' => 'far fa-fw fa-file',
-            'url' => 'admin/categories',
-            'can' => 'isAdmin',
-        ],
-        [
-            'text' => 'System categories',
-            'icon' => 'far fa-fw fa-file',
-            'url' => 'admin/categories/system',
-            'can' => 'isAdmin',
-        ],
-        [
-            'text' => 'View categories',
-            'icon' => 'far fa-fw fa-file',
-            'url' => '/categories',
-            'can' => 'isUser',
-        ],
-        [
-            'text' => 'View my categories',
-            'icon' => 'far fa-fw fa-file',
-            'url' => '/categories/mine',
-            'can' => 'isUser',
-        ],
-
-        ['header' => 'Collections'],
-        [
-            'text' => 'Collections',
-            'icon' => 'far fa-fw fa-file',
-            'url' => '/collections',
-            'can' => 'isUser',
-        ],
     ],
 
     /*

@@ -32,13 +32,14 @@ class BuildMenu
         $latestCollections = $user->collections()
             ->latest()
             ->take(3)
-            ->get();
+            ->get()
+            ->reverse();
 
         foreach ($latestCollections as $collection) {
-            $event->menu->add([
+            $event->menu->addAfter('collections-menu', [
                 'text' => Str::limit($collection->name, 20),
                 'icon' => 'far fa-fw fa-file',
-                'icon_color' => 'cyan',
+                'icon_color' => 'grey',
                 'url' => '/collections/' . $collection->id,
             ]);
         }

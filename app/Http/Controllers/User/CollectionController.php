@@ -32,10 +32,7 @@ class CollectionController extends Controller
             return datatables()
                 ->of($collections)
                 ->editColumn('created_at', function ($collection) {
-                    return optional($collection->created_at)->format('Y-m-d h:i');
-                })
-                ->editColumn('updated_at', function ($collection) {
-                    return optional($collection->updated_at)->format('Y-m-d h:i');
+                    return optional($collection->created_at)->format('Y M d');
                 })
                 ->addColumn('actions', function ($collection) {
                     $viewUrl = route('collections.show', $collection->id);

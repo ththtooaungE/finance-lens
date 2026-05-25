@@ -21,8 +21,7 @@
             <th>No</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Created At</th>
-            <th>Updated At</th>
+            <th>Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -56,10 +55,6 @@
                 {
                     data: 'created_at',
                     name: 'created_at'
-                },
-                {
-                    data: 'updated_at',
-                    name: 'updated_at'
                 },
                 {
                     data: 'actions',

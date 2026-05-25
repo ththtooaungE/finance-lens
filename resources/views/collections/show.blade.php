@@ -44,65 +44,71 @@
 </table>
 
 <div class="card">
-    <div class="card-body row">
-        <div class="btn-group mr-3">
-            <button
-                id="sort-price-desc"
-                class="btn btn-sm btn-info"
-                style="border-top-left-radius:25px; border-bottom-left-radius:25px; margin-right: 2px;">Hightest</button>
+    <div class="card-body row gx-2 gx-2 align-items-center">
+        <!-- Filter Buttons -->
+        <div class="col-xl-2 btn-group">
             <button
                 id="sort-date"
                 class="btn btn-sm btn-info"
-                style="margin-right: 2px;">Latest</button>
+                style="border-top-left-radius:25px; border-bottom-left-radius:25px;">Latest</button>
+            <button
+                id="sort-price-desc"
+                class="btn btn-sm btn-info">Hightest</button>
+
             <button
                 id="sort-category"
                 class="btn btn-sm btn-info"
                 style="border-top-right-radius:25px; border-bottom-right-radius:25px;">Category</button>
 
         </div>
-        <div id="costCreate" class="col-xl-6">
-            <!-- Cost form (for create & edit) -->
+
+        <!-- Total Cost Display -->
+        <div class="col-xl-2 text-center">
+            <p class="m-0"><i class="fas fa-fw fa-coins"></i> <i id="grand-total-cost"></i></p>
+        </div>
+
+        <!-- Cost Creat Form -->
+        <div id="costCreate" class="col-xl-8">
             <form action="{{ route('costs.store') }}" method="POST">
                 @csrf
-                @method('POST')
-                <input type="hidden" name="collection_id" value="{{ $collection->id }}">
-
                 <!-- hidden input to store cost id when editing -->
                 <input type="hidden" name="id" id="cost_id">
+                <input type="hidden" name="collection_id" value="{{ $collection->id }}">
+                <div class="row gx-2">
 
-                <div class="d-flex flex-row gap-2">
-                    <!-- Combined input -->
-                    <div class="flex-fill w-auto mr-2 ">
+                    <div class="col">
                         <input
                             type="text"
                             id="combined_input"
                             name="combined_input"
                             class="form-control"
-                            placeholder="Enter Price and Cost Name" value="" autofocus>
+                            placeholder="Enter Price and Cost Name"
+                            autofocus>
                     </div>
-
-                    <div id="category-wrapper" class="mr-2">
+                    <div id="category-wrapper" class="col-auto">
                         <select
                             name="category_id"
-                            class="custom-select w-auto"
-                            size="1"
-                            value="Select Category">
+                            class="custom-select">
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}" class="p-1 rounded-lg">{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">
+                                {{ $category->name }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </div>
-            </form>
-        </div>
 
-        <div class="">
-            <p
-                id="grand-total-cost"
-                class="btn m-0"></p>
+                    <div class="col-auto">
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+                            Add
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
         </div>
 
     </div>
@@ -197,7 +203,7 @@
             container.append(card);
 
             // Display the Grand Total Cost
-            $('#grand-total-cost').text('Grand Total Cost - ' + grandTotalCost);
+            $('#grand-total-cost').text(grandTotalCost);
         });
     }
 
@@ -294,7 +300,7 @@
         let name = combinedInput;
 
         // Match: starts with number + space + remaining text
-        let match = combinedInput.match(/^(\d+)\s+(.+)$/);
+        let match = combinedInput.match(/^(\d+(?:\.\d+)?)\s+(.+)$/);
 
         if (match) {
             price = match[1];
@@ -354,8 +360,9 @@
 
         // fill form
         $('#cost_id').val(id);
-        $('input[name="name"]').val(name);
-        $('input[name="price"]').val(price);
+        // $('input[name="name"]').val(name);
+        // $('input[name="price"]').val(price);
+        $('input[name="combined_input"').val(price + ' ' + name);
         $('select[name="category_id"]').val(category === 'No Category' ? '' : category);
 
         $('#category-wrapper').hide();
@@ -393,6 +400,8 @@
         });
     });
 
+
+    // Sorting
     $('#sort-price-asc').on('click', function() {
         showCategoryColor = false;
         table.order([1, 'asc']).draw();

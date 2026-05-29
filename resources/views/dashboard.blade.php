@@ -10,10 +10,10 @@
 
 @section('content')
 
-<div class="row mb-3" style="gap: 0;">
+<div class="row">
 
-    {{-- Table --}}
-    <div class="col-lg-6 col-md-12 mb-3 px-3">
+    {{-- Recent Costs Table --}}
+    <div class="col-lg-6 col-md-12">
         <div class="card shadow-sm border-0">
 
             <div class="card-header bg-white">
@@ -55,60 +55,14 @@
 
 
     {{-- Widgets --}}
-    <div class="col-lg-3 col-md-6 px-3">
-        <div class="d-flex flex-wrap" style="column-gap: 15px;">
+    <div class="col-lg-3 col-md-6">
+        <div class="row">
 
             {{-- Category --}}
-            <div class="flex-fill">
-                <div class="card shadow-sm border-0" style="min-height: 110px">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow-sm border-0" style="min-height: 113px">
                     <div class="card-body py-3 px-4">
-                        <div class="d-flex justify-content-between align-items-center">
 
-                            <div>
-                                <p class="text-muted mb-1 small font-weight-bold">
-                                    Category
-                                </p>
-                                <h3 class="mb-0 font-weight-bold text-success">
-                                    {{ $categoryCount }}
-                                </h3>
-                            </div>
-                            <div>
-                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Category --}}
-            <div class="flex-fill">
-                <div class="card shadow-sm border-0" style="min-height: 110px">
-                    <div class="card-body py-3 px-4">
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div>
-                                <p class="text-muted mb-1 small font-weight-bold">
-                                    Category
-                                </p>
-                                <h3 class="mb-0 font-weight-bold text-success">
-                                    {{ $categoryCount }}
-                                </h3>
-                            </div>
-                            <div>
-                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            {{-- Category --}}
-            <div class="flex-fill">
-                <div class="card shadow-sm border-0" style="min-height: 110px">
-                    <div class="card-body py-3 px-4">
                         <div class="d-flex justify-content-between align-items-center">
 
                             <div>
@@ -129,23 +83,66 @@
             </div>
 
             {{-- Collection --}}
-            <div class="flex-fill">
-                <div class="card shadow-sm border-0" style="min-height: 110px">
-                    <div class="card-body">
+            <div class="col-md-6 col-12">
+                <div class="card shadow-sm border-0" style="min-height: 113px">
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <p class="text-muted mb-1 small font-weight-bold">
+                                    Category
+                                </p>
+                                <h3 class="mb-0 font-weight-bold text-success">
+                                    {{ $categoryCount }}
+                                </h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-layer-group fa-2x text-success opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- Category --}}
+            <div class="col-md-6 col-12">
+                <div class="card shadow-sm border-0" style="min-height: 113px">
+                    <div class="card-body py-3 px-4">
                         <div class="d-flex justify-content-between align-items-center">
 
                             <div>
                                 <p class="text-muted mb-1 small font-weight-bold">
                                     Collection
                                 </p>
-
-                                <h3 class="mb-0 font-weight-bold text-primary">
+                                <h3 class="mb-0 font-weight-bold text-success">
                                     {{ $collectionCount }}
                                 </h3>
                             </div>
+                            <div>
+                                <i class="fas fa-wallet fa-2x text-success opacity-50"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Collection --}}
+            <div class="col-md-6 col-12">
+                <div class="card shadow-sm border-0" style="min-height: 113px">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <div>
-                                <i class="fas fa-wallet fa-2x text-primary opacity-50"></i>
+                                <p id="year-month" class="text-muted mb-1 small font-weight-bold"></p>
+
+                                <h3 id="today-date" class="mb-0 font-weight-bold text-primary"></h3>
+                            </div>
+
+                            <div>
+                                <i class="fas fa-calendar-alt fa-2x text-primary opacity-50"></i>
                             </div>
 
                         </div>
@@ -157,7 +154,7 @@
     </div>
 
     {{-- PROFILE --}}
-    <div class="col-lg-3 mb-3 d-flex">
+    <div class="col-lg-3 d-flex">
         <div class="card shadow-sm border-0 w-100">
             <div class="card-body py-3 px-3 d-flex flex-column justify-content-center align-items-center text-center">
 
@@ -188,11 +185,11 @@
 </div>
 
 
-<!-- Latest Collection Report -->
-<div class="row" style="gap: 0;">
+<!-- Line & Bar  Report -->
+<div class="row">
 
     <!-- Latest Collection Date Report -->
-    <div class="col-lg-6 px-3">
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Latest Spending Chart Analysis By Date</h3>
@@ -204,26 +201,8 @@
         </div>
     </div>
 
-    <!-- Latest Collection Category Report -->
-    <div class="col-lg-6 px-3">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Latest Spending Chart Analysis By Category</h3>
-            </div>
-
-            <div class="card-body">
-                <canvas id="latestCollectionCategoryReport"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Previous Collection Report -->
-<div class="row">
-
     <!-- Previous Collection Report By Date -->
-    <div class="col-lg-6 p-3">
+    <div class="col-lg-6">
         <div class=" card">
             <div class="card-header">
                 <h3 class="card-title">Previous Spending Chart Analysis By Date</h3>
@@ -235,8 +214,27 @@
         </div>
     </div>
 
+</div>
+
+
+<!-- Doughnut Report -->
+<div class="row">
+
+    <!-- Latest Collection Category Report -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Latest Spending Chart Analysis By Category</h3>
+            </div>
+
+            <div class="card-body">
+                <canvas id="latestCollectionCategoryReport"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- Previous Collection Report By Category -->
-    <div class="col-lg-6 p-3">
+    <div class="col-lg-6">
         <div class=" card">
             <div class="card-header">
                 <h3 class="card-title">Previous Spending Chart Analysis By Category</h3>
@@ -247,12 +245,25 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 @stop
 
 @section('js')
 <script>
+    // Display current year, month, and today's date
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+
+    $('#year-month').text(`${year} ${now.toLocaleString('default', { month: 'long' })}`);
+    $('#today-date').text(day);
+
+
+
     // Latest Collection Report By Date
     const latestCollectionDateReport = document.getElementById('latestCollectionDateReport').getContext('2d');
 

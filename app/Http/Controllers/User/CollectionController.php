@@ -39,14 +39,29 @@ class CollectionController extends Controller
                     $editUrl = route('collections.edit', $collection->id);
                     $deleteUrl = route('collections.destroy', $collection->id);
 
-                $btn = '<div class="btn-group" role="group">'
-                        . '<a href="' . $viewUrl . '" class="btn btn-sm btn-info mr-1 rounded-sm">View</a>'
-                        . '<a href="' . $editUrl . '" class="btn btn-sm btn-primary mr-1 rounded-sm">Edit</a>';
-                $btn .= '<form action="' . $deleteUrl . '" method="post" id="delete-form-' . $collection->id . '" style="display: inline-block;">'
-                        . csrf_field()
-                        . method_field('DELETE')
-                        . '<button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete(' . $collection->id . ')">Delete</button>'
-                        . '</form> </div>';
+                $btn = '<div class="d-flex align-items-center">'
+
+                    . '<a href="' . $viewUrl . '" class="btn action-icon" style="color:#94B2ED; font-size:16px;">
+                            <i class="far fa-eye"></i>
+                        </a>'
+
+                    . '<a href="' . $editUrl . '" class="btn action-icon" style="color:#649857; font-size:16px;">
+                            <i class="far fa-edit"></i>
+                        </a>'
+
+                    . '<form action="' . $deleteUrl . '" method="POST" style="display:inline;"> ' 
+                            . csrf_field() 
+                            . method_field("DELETE") 
+                            . '
+                            <button type="button"
+                                class="btn action-icon"
+                                onclick="confirmDelete(' . $collection->id . ')"
+                                style="border:none;color:#dc3545;font-size:16px;cursor:pointer;">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </form>'
+
+                    . '</div>';
 
                     return $btn;
                 })

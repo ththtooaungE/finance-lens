@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Fineance</b> LENs',
+    'logo' => '<b>Note</b> <small>For</small> <b>Numbers</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -340,11 +340,11 @@ return [
             'label_color' => 'success',
         ],
 
-        ['header' => 'Collections'],
+        ['header' => 'COLLECTIONS'],
         [
             'key' => 'collections-menu',
             'text' => 'Collections',
-            'icon' => 'far fa-fw fa-file',
+            'icon' => 'fas fa-fw fa-th',
             'url' => '/collections',
             'can' => 'isUser',
         ],
@@ -355,28 +355,28 @@ return [
             'url' => 'admin/users',
             'can' => 'isAdmin',
         ],
-        ['header' => 'Categories'],
+        ['header' => 'CATEGORIES'],
         [
-            'text' => 'View all categories',
-            'icon' => 'far fa-fw fa-file',
+            'text' => 'All Categories',
+            'icon' => 'far fa-fw fa-layer-group',
             'url' => 'admin/categories',
             'can' => 'isAdmin',
         ],
         [
-            'text' => 'System categories',
-            'icon' => 'far fa-fw fa-file',
+            'text' => 'System Categories',
+            'icon' => 'far fa-fw fa-layer-group',
             'url' => 'admin/categories/system',
             'can' => 'isAdmin',
         ],
         [
-            'text' => 'View categories',
-            'icon' => 'far fa-fw fa-file',
+            'text' => 'All Categories',
+            'icon' => 'fas fa-fw fa-layer-group',
             'url' => '/categories',
             'can' => 'isUser',
         ],
         [
-            'text' => 'View my categories',
-            'icon' => 'far fa-fw fa-file',
+            'text' => 'My Categories',
+            'icon' => 'fas fa-fw fa-layer-group',
             'url' => '/categories/mine',
             'can' => 'isUser',
         ],

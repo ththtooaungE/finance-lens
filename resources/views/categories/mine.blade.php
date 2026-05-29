@@ -4,11 +4,11 @@
 
 @section('content_header')
 <div class="row d-flex justify-content-between">
-    <div class="col-md-6">
+    <div>
         <h2>Categories</h2>
     </div>
-    <div class="">
-        <a href="{{ $createUrl }}" class="btn btn-primary">Create Category</a>
+    <div>
+        <a href="{{ $createUrl }}" class="btn btn-primary"><i class="fas fa-plus-square"></i> Category</a>
     </div>
 </div>
 @stop
@@ -21,7 +21,7 @@
             <td scope="col">Name</td>
             <td scope="col">Color</td>
             <td scope="col">Active</td>
-            <td scope="col">Created Time</td>
+            <td scope="col">Date Time</td>
             <td scope="col">Actions</td>
         </tr>
     </thead>

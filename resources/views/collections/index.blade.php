@@ -4,11 +4,11 @@
 
 @section('content_header')
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-6">
         <h1>Collections</h1>
     </div>
-    <div class="col-md-6 text-right">
-        <a href="{{ route('collections.create') }}" class="btn btn-primary">Create Collection</a>
+    <div class="col-6 text-right">
+        <a href="{{ route('collections.create') }}" class="btn btn-primary"><i class="fas fa-plus-square"></i> Collection</a>
     </div>
 </div>
 
@@ -29,7 +29,24 @@
 </table>
 @stop
 
+
+@section('css')
+<style>
+    .action-icon {
+        font-size: 16px;
+        transition: 0.2s;
+    }
+
+    .action-icon:hover {
+        background-color: #EFF6FF;
+        opacity: 0.7;
+        color: red;
+    }
+</style>
+@stop
+
 @section('js')
+
 @include('partials.flash')
 @include('partials.delete-confirm')
 <script>
@@ -50,7 +67,14 @@
                 },
                 {
                     data: 'description',
-                    name: 'description'
+                    name: 'description',
+                    render: function(data) {
+                        if (data.length > 100) {
+                            return data.substring(0, 100) + '...';
+                        }
+
+                        return data;
+                    }
                 },
                 {
                     data: 'created_at',

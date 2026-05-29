@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Finance Lens</title>
+    <title>Note For Numbers</title>
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/033521daa8.js" crossorigin="anonymous"></script>
@@ -38,7 +38,7 @@
 
             <!-- Brand -->
             <a href="#" class="navbar-brand fw-bold" style="font-size: 26px; color: #649857">
-                Finance Lens
+                NOTE FOR NUMBERS
             </a>
 
             <!-- Toggler -->

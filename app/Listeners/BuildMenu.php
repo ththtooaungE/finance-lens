@@ -38,7 +38,7 @@ class BuildMenu
         foreach ($latestCollections as $collection) {
             $event->menu->addAfter('collections-menu', [
                 'text' => Str::limit($collection->name, 20),
-                'icon' => 'far fa-fw fa-file',
+                'icon' => 'fas fa-fw fa-file-alt',
                 'icon_color' => 'grey',
                 'url' => '/collections/' . $collection->id,
             ]);

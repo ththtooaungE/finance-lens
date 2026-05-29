@@ -2,16 +2,13 @@
 
 @section('title', 'Create Collection')
 
-@section('content_header')
-<h1>Create Collection</h1>
-@stop
-
 @section('content')
+
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9 mt-3">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Create New Collection</h3>
+                <h3 class="card-title">Create A New Collection</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('collections.store') }}" method="POST">
@@ -37,10 +34,9 @@
                         <select name="category_ids[]" id="category_ids" class="custom-select" size="7" multiple>
                             @foreach($categories as $category)
                             <option value="{{ $category->id }}" class="p-1 m-1 rounded-lg"
-                            @foreach(old('category_ids', []) as $selectedCategoryId)
+                                @foreach(old('category_ids', []) as $selectedCategoryId)
                                 {{ $selectedCategoryId == $category->id ? 'selected' : '' }}
-                            @endforeach
-                            >{{ $category->name }}</option>
+                                @endforeach>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         @error('category_ids')
@@ -48,8 +44,8 @@
                         @enderror
                     </div>
 
-                    <a href="{{ route('collections.index') }}" class="btn btn-secondary" style="min-width: 75px;">Cancel</a>
-                    <button type="submit" class="btn btn-primary" style="min-width: 75px;">Create Collection</button>
+                    <a href="{{ route('collections.index') }}" class="btn btn-outline-secondary" style="min-width: 75px;">Cancel</a>
+                    <button type="submit" class="btn btn-outline-primary" style="min-width: 75px;">Save</button>
                 </form>
             </div>
         </div>

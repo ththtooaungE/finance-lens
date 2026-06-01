@@ -21,7 +21,8 @@ class UserController extends Controller
                 'email_verified_at',
                 'created_at'
             )
-                ->where('id', '!=', auth()->id());
+                ->where('id', '!=', auth()->id())
+                ->latest();
 
             return datatables()
                 ->of($users)
@@ -64,6 +65,7 @@ class UserController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['toggle-status', 'actions'])
+                ->addIndexColumn()
                 ->make(true);
         }
 

@@ -2,16 +2,12 @@
 
 @section('title', 'Users')
 
-@section('content_header')
-<h1>Users</h1>
-@stop
-
 @section('content')
 
 <table id="usersTable" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th class="text-center">ID</th>
+            <th class="text-center">No</th>
             <th>Name</th>
             <th>Email</th>
             <th>Status</th>
@@ -33,8 +29,10 @@
             serverSide: true,
             ajax: '{{ url("admin/users") }}',
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'name',

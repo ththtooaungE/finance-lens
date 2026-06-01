@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/avatar', [ProfileController::class, 'avatar'])->middleware('auth')->name('avatar.show');
 
     // Admin & User Routes - Category Status Toggle - Ajax Route
-    Route::patch('categories/{id}/status-toggle', [CategoryController::class, 'statusToggle'])->name('admin.users.update');
+    Route::patch('categories/{id}/status-toggle', [CategoryController::class, 'statusToggle'])->name('admin.categories.status-toggle');
 
 
     // Admin Routes
@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
         // Admin Dashboard Routes
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        
 
         // Admin User Management Routes
         Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
@@ -56,8 +57,8 @@ Route::middleware('auth')->group(function () {
         Route::put('users/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('users/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');
         // Ajax Route
-        Route::patch('users/{id}/status-toggle', [UserController::class, 'statusToggle'])->name('admin.users.update');
-
+        Route::patch('users/{id}/status-toggle', [UserController::class, 'statusToggle'])->name('admin.users.status-toggle');
+        
         // Admin Category Routes
         Route::get('/categories/system', [CategoryController::class, 'getSystemCategory'])->name('admin.categories.system');
         Route::resource('categories', CategoryController::class, [

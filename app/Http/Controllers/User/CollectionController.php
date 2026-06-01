@@ -27,7 +27,8 @@ class CollectionController extends Controller
         if ($request->ajax()) {
 
             $collections = Collection::where('user_id', auth()->id())
-                ->select('id', 'name', 'description', 'created_at', 'updated_at');
+                ->select('id', 'name', 'description', 'created_at', 'updated_at')
+                ->latest();
 
             return datatables()
                 ->of($collections)
@@ -49,7 +50,7 @@ class CollectionController extends Controller
                             <i class="far fa-edit"></i>
                         </a>'
 
-                    . '<form action="' . $deleteUrl . '" method="POST" style="display:inline;"> ' 
+                    . '<form action="' . $deleteUrl . '" method="POST" id="delete-form-' . $collection->id . '" style="display:inline;"> ' 
                             . csrf_field() 
                             . method_field("DELETE") 
                             . '

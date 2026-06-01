@@ -40,7 +40,7 @@
                         <tr>
                             <td>No</td>
                             <td>{{ $collection->name }}</td>
-                            <td>{{ $collection->costs[0]->total_cost }} MMK</td>
+                            <td>{{ $collection->costs->isNotEmpty() ? $collection->costs->first()->total_cost : 0 }} MMK</td>
                             <td>{{ $collection->created_at?->format('Y M d') }}</td>
                         </tr>
                         @endforeach
@@ -192,7 +192,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Latest Spending Chart Analysis By Date</h3>
+                <h3 class="card-title">Daily Spending - {{ $latestCollectionDateReport['title'] }}</h3>
             </div>
 
             <div class="card-body">
@@ -205,7 +205,7 @@
     <div class="col-lg-6">
         <div class=" card">
             <div class="card-header">
-                <h3 class="card-title">Previous Spending Chart Analysis By Date</h3>
+                <h3 class="card-title">Daily Spending - {{ $previousCollectionDateReport['title'] }}</h3>
             </div>
 
             <div class="card-body">
@@ -224,7 +224,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Latest Spending Chart Analysis By Category</h3>
+                <h3 class="card-title">Category Spending - {{ $latestCollectionCategoryReport['title'] }}</h3>
             </div>
 
             <div class="card-body">
@@ -237,7 +237,7 @@
     <div class="col-lg-6">
         <div class=" card">
             <div class="card-header">
-                <h3 class="card-title">Previous Spending Chart Analysis By Category</h3>
+                <h3 class="card-title">Category Spending - {{ $previousCollectionCategoryReport['title'] }}</h3>
             </div>
 
             <div class="card-body">

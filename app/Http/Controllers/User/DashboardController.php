@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
         $recentCollections = Collection::where('user_id', $userId)
             ->latest()
-            ->take(5)
+            ->take(3)
             ->with([
                 'costs' => function($query) {
                     $query->selectRaw('
@@ -62,6 +62,7 @@ class DashboardController extends Controller
             ->first();
 
         $latestCollectionCategoryReport = [
+            'title' => $latestCollectionByCategory ? $latestCollectionByCategory->name : 'No Collections',
             'labels' => [],
             'data' => [],
             'colors' => [],
@@ -92,6 +93,7 @@ class DashboardController extends Controller
             ->first();
 
         $latestCollectionDateReport = [
+            'title' => $latestCollectionByDate ? $latestCollectionByDate->name : 'No Collections',
             'labels' => [],
             'data' => [],
         ];
@@ -142,6 +144,7 @@ class DashboardController extends Controller
             ->first();
 
         $previousCollectionCategoryReport = [
+            'title' => $previousCollectionByCategory ? $previousCollectionByCategory->name : 'No Collections',
             'labels' => [],
             'data' => [],
             'colors' => [],
@@ -173,6 +176,7 @@ class DashboardController extends Controller
             ->first();
 
         $previousCollectionDateReport = [
+            'title' => $previousCollectionByDate ? $previousCollectionByDate->name : 'No Collections',
             'labels' => [],
             'data' => [],
         ];

@@ -202,9 +202,10 @@
                 `;
             container.append(card);
 
-            // Display the Grand Total Cost
-            $('#grand-total-cost').text(grandTotalCost);
         });
+
+        // Display the Grand Total Cost
+        $('#grand-total-cost').text(grandTotalCost);
     }
 
     function handleSuccess(response, form) {

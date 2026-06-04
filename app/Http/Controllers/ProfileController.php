@@ -66,6 +66,14 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
+        
+        // Delete related data
+        $collections = $user->collections()->get();
+        foreach ($collections as $collection) {
+            $collection->costs()->delete();
+        }
+        $user->collections()->delete();
+        $user->categories()->delete();
 
         $user->delete();
 

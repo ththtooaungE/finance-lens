@@ -332,13 +332,13 @@ return [
             'icon' => 'fas fa-fw fa-chart-line',
             'can' => 'isUser'
         ],
-        [
-            'text' => 'Notifications',
-            'url' => '#',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
+        // [
+        //     'text' => 'Notifications',
+        //     'url' => '#',
+        //     'icon' => 'far fa-fw fa-file',
+        //     'label' => 4,
+        //     'label_color' => 'success',
+        // ],
 
         ['header' => 'COLLECTIONS'],
         [
@@ -386,11 +386,11 @@ return [
             'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
-            'text' => 'Settings Soon',
-            'url' => '#',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+        // [
+        //     'text' => 'Settings Soon',
+        //     'url' => '#',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         // [
         //     'text' => 'multilevel',
         //     'icon' => 'fas fa-fw fa-share',

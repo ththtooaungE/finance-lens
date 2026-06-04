@@ -38,7 +38,7 @@
                     <tbody>
                         @foreach( $recentCollections as $collection )
                         <tr>
-                            <td>No</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $collection->name }}</td>
                             <td>{{ $collection->costs->isNotEmpty() ? $collection->costs->first()->total_cost : 0 }} MMK</td>
                             <td>{{ $collection->created_at?->format('Y M d') }}</td>

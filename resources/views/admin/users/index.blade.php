@@ -2,6 +2,10 @@
 
 @section('title', 'Users')
 
+@section('content_header')
+<h1>User Lists</h1>
+@stop
+
 @section('content')
 
 <table id="usersTable" class="table table-bordered table-striped">

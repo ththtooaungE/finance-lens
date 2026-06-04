@@ -15,7 +15,7 @@
                         <h3 class="font-weight-bold h3 text-center">{{ $userCount }}</h3>
                     </div>
                     <div class="icon">
-                        <i class="far fa-users" style="font-size: 24px;"></i>
+                        <i class="far fa-users text-success opacity-50" style="font-size: 24px;"></i>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                         <h3 class="font-weight-bold h3 text-center">{{ $collectionCount }}</h3>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-fw fa-th opacity-50" style="font-size: 24px;"></i>
+                        <i class="fas fa-fw fa-th text-success opacity-50" style="font-size: 24px;"></i>
                     </div>
                 </div>
 

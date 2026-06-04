@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
         // User Category Routes
         Route::get('/categories/mine', [UserCategoryController::class, 'getMyCategory'])->name('user.categories.mine');
         Route::get('categories', [UserCategoryController::class, 'index'])->name('user.categories.index');
-        Route::get('categories/create', [UserCategoryController::class, 'create'])->name('user.categories.create');
+        Route::get('categories/create', [UserCategoryController::class, 'create'])->middleware('mustBeActive')->name('user.categories.create');
         Route::get('categories/{id}', [UserCategoryController::class, 'show'])->name('user.categories.show');
         Route::post('categories', [UserCategoryController::class, 'store'])->name('user.categories.store');
         Route::get('categories/{id}/edit', [UserCategoryController::class, 'edit'])->name('user.categories.edit');
@@ -91,7 +91,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('categories/{id}', [UserCategoryController::class, 'destroy'])->name('user.categories.destroy');
 
         // User Collection Routes
-        Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class);
+        Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class)->except(['create']);
+        Route::get('/collections/create', [\App\Http\Controllers\User\CollectionController::class, 'create'])->middleware('mustBeActive')->name('collections.create');
         Route::get('/collections/{id}/costs', [\App\Http\Controllers\User\CollectionController::class, 'costs'])->name('collections.costs');
 
         // User Cost Routes - API Endpoints

@@ -5,7 +5,7 @@
 @section('content_header')
 <div class="row d-flex justify-content-between">
     <div>
-        <h2>Categories</h2>
+        <h2>My Categories</h2>
     </div>
     <div>
         <a href="{{ $createUrl }}" class="btn btn-primary"><i class="fas fa-plus-square"></i> Category</a>

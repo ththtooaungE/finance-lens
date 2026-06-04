@@ -71,11 +71,11 @@ class DashboardController extends Controller
         if ($latestCollectionByCategory) {
 
             $latestCollectionCategoryReport['labels'] = $latestCollectionByCategory->costs
-                ->map(fn($cost) => $cost->category->name)
+                ->map(fn($cost) => $cost->category ? $cost->category->name : 'unknown')
                 ->toArray();
 
             $latestCollectionCategoryReport['colors'] = $latestCollectionByCategory->costs
-                ->map(fn($cost) => $cost->category->color)
+                ->map(fn($cost) => $cost->category ? $cost->category->color : '#649857')
                 ->toArray();
 
             $latestCollectionCategoryReport['data'] = $latestCollectionByCategory->costs
@@ -153,11 +153,11 @@ class DashboardController extends Controller
         if ($previousCollectionByCategory) {
 
             $previousCollectionCategoryReport['labels'] = $previousCollectionByCategory->costs
-                ->map(fn($cost) => $cost->category->name)
+                ->map(fn($cost) => $cost->category ? $cost->category->name : 'unknown')
                 ->toArray();
 
             $previousCollectionCategoryReport['colors'] = $previousCollectionByCategory->costs
-                ->map(fn($cost) => $cost->category->color)
+                ->map(fn($cost) => $cost->category ? $cost->category->color : '#649857')
                 ->toArray();
 
             $previousCollectionCategoryReport['data'] = $previousCollectionByCategory->costs

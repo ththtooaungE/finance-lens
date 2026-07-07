@@ -91,8 +91,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('categories/{id}', [UserCategoryController::class, 'destroy'])->name('user.categories.destroy');
 
         // User Collection Routes
-        Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class)->except(['create']);
         Route::get('/collections/create', [\App\Http\Controllers\User\CollectionController::class, 'create'])->middleware('mustBeActive')->name('collections.create');
+        Route::resource('/collections', \App\Http\Controllers\User\CollectionController::class)->except(['create']);
         Route::get('/collections/{id}/costs', [\App\Http\Controllers\User\CollectionController::class, 'costs'])->name('collections.costs');
 
         // User Cost Routes - API Endpoints

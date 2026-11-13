@@ -68,6 +68,11 @@
                     orderable: false,
                     searchable: false
                 }
+            ],
+            columnDefs: [{
+                    targets: [0, 2, 3, 4, 5],
+                    className: 'text-center'
+                }
             ]
         });
     });

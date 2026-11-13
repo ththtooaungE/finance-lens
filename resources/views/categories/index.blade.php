@@ -44,7 +44,11 @@
                     data: 'user.name',
                     name: 'user.name'
                 }
-            ]
+            ],
+            columnDefs: [{
+                targets: [0, 2, 3],
+                className: 'text-center'
+            }]
         });
     });
 </script>
